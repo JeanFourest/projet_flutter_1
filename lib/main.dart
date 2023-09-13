@@ -1,40 +1,27 @@
 
 import 'package:flutter/material.dart';
-import 'package:projet_flutter_1/pages/home_page.dart';
+import 'package:projet_flutter_1/pages/profile.dart';
 import 'package:mongo_dart/mongo_dart.dart';
+import 'package:projet_flutter_1/db.dart';
 
 void main() async {
-  var db = Db('mongodb://localhost:27017/infoContacts');
-  await db.open();
-  print('Connexion établie');
-  runApp(const AppContacts());
-  var collection = db.collection('contacts');
-  await collection.insert({
-    'name': 'John',
-    'surname': 'Doe',
-    'phoneNumber': '1234567890',
-    'email': 'john.doe@example.com'
-  });
-  await collection.remove(where.eq('name', 'John'));
-  var contacts = await collection.find().toList();
-  print(contacts);
-  await db.close();
+  WidgetsFlutterBinding.ensureInitialized();
+  await MongoDatabase.connect();
+  runApp(const MyApp());
 }
 
-class AppContacts extends StatelessWidget {
-  const AppContacts({Key? key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const PageContacts(title: 'Contacts'),
-      debugShowCheckedModeBanner: false,
-
+      home: const PageContacts(title: 'Flutter Demo Home Page'),
     );
   }
 }
