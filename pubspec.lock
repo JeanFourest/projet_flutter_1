@@ -219,8 +219,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-<<<<<<< HEAD
-=======
   nested:
     dependency: transitive
     description:
@@ -229,7 +227,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
->>>>>>> 40583d0405f722ba22bed3fd8bbb7a628fce4d8d
   packages_extensions:
     dependency: transitive
     description:
@@ -278,8 +275,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
-<<<<<<< HEAD
-=======
   provider:
     dependency: "direct main"
     description:
@@ -288,7 +283,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
->>>>>>> 40583d0405f722ba22bed3fd8bbb7a628fce4d8d
   rational:
     dependency: transitive
     description:
