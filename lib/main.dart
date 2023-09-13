@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:projet_flutter_1/pages/homePage.dart';
 import 'package:projet_flutter_1/db.dart';
+=======
+import 'package:projet_flutter_1/pages/home_page.dart';
+>>>>>>> 40583d0405f722ba22bed3fd8bbb7a628fce4d8d
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
