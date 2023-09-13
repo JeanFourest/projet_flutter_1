@@ -12,16 +12,16 @@ class ContactInfo {
   String email = "";
 }
 
-class PageContacts extends StatefulWidget {
-  const PageContacts({Key? key, required this.title});
+class PageProfil extends StatefulWidget {
+  const PageProfil({Key? key, required this.title});
 
   final String title;
 
   @override
-  State<PageContacts> createState() => _PageContactsState();
+  State<PageProfil> createState() => _PageProfilState();
 }
 
-class _PageContactsState extends State<PageContacts> {
+class _PageProfilState extends State<PageProfil> {
   int _index = 0;
   List<ContactInfo> contacts = [];
 
@@ -43,7 +43,7 @@ class _PageContactsState extends State<PageContacts> {
     TextEditingController emailObservateur = TextEditingController();
 
     Widget annulerForm = TextButton(
-      child: Text("Annuler"),
+      child: const Text("Annuler"),
       onPressed: () {
         Navigator.pop(context); // Ferme l'alerte
       },
@@ -73,19 +73,19 @@ class _PageContactsState extends State<PageContacts> {
         children: [
           TextField(
             controller: nomObservateur,
-            decoration: InputDecoration(labelText: 'Nom'),
+            decoration: const InputDecoration(labelText: 'Nom'),
           ),
           TextField(
             controller: prenomObservateur,
-            decoration: InputDecoration(labelText: 'Prénom'),
+            decoration: const InputDecoration(labelText: 'Prénom'),
           ),
           TextField(
             controller: numeroObservateur,
-            decoration: InputDecoration(labelText: 'Numéro'),
+            decoration: const InputDecoration(labelText: 'Numéro'),
           ),
           TextField(
             controller: emailObservateur,
-            decoration: InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
         ],
       ),
@@ -110,50 +110,174 @@ class _PageContactsState extends State<PageContacts> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
-        actions: [
-          TextButton(
-            child: Text("Importer vos contacts"),
-            onPressed: () {
-              setState(() {
-                _importerContacts(context);
-              });
-              //Navigator.pop(context); // Ferme l'alerte
-            },
-          ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
+            onPressed: () {},
+          )
         ],
       ),
-      body: _index > 0 ? ListView.builder(
-        itemCount: _index,
-        itemBuilder: (BuildContext context, int index) {
-          ContactInfo contact = contacts[index];
-          return Card(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.phone),
-                  trailing: Text(
-                    contact.numero,
-                    style: TextStyle(color: Colors.green, fontSize: 15),
-                  ),
-                  title: Text('const ${contact.nom} ${contact.prenom}'),
-                ),
-                Text(contact.email),
-              ],
-            ),
-          );
-        },
-      )
-          : const Center( // ":" si conditions fausse =>
-        child: const Text("Aucun contact n'a été ajouté."),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _AjoutContactFormulaire(context);
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      body: const actionProfil(),
     );
+  }
+}
+
+  class actionProfil extends StatelessWidget {
+    const actionProfil({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ListView(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PageProfil(title: 'Vos Event'),
+                  ),
+                );
+              },
+              child: const Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.add),
+                          Icon(Icons.celebration),
+                          SizedBox(width: 8), // Pour ajouter un espace entre les icônes
+                          Text('Créer un Event')
+                        ],
+                      ),
+                      subtitle: Text('Retrouvez toutes vos événements créées par vous'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 1000),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PageProfil(title: 'Vos Event'),
+                  ),
+                );
+              },
+              child: const Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.add),
+                          Icon(Icons.emoji_events),
+                          SizedBox(width: 8), // Pour ajouter un espace entre les icônes
+                          Text('Créer une Compétitions')
+                        ],
+                      ),
+                      subtitle: Text('Retrouvez toutes vos compétitions créées par vous'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+
+
+
+
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PageProfil(title: 'Vos Event'),
+                  ),
+                );
+              },
+              child: const Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.history),
+                          Icon(Icons.celebration),
+                          SizedBox(width: 8), // Pour ajouter un espace entre les icônes
+                          Text('Vos Compétitions')
+                        ],
+                      ),
+                      subtitle: Text('Retrouvez toutes vos compétitions auquels vous participez'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PageProfil(title: 'Vos Event'),
+                  ),
+                );
+              },
+              child: const Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.history),
+                          Icon(Icons.emoji_events),
+                          SizedBox(width: 8), // Pour ajouter un espace entre les icônes
+                          Text('Vos Compétitions')
+                        ],
+                      ),
+                      subtitle: Text('Retrouvez toutes vos compétitions auquelles vous participez'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PageProfil(title: 'Vos Event'),
+                  ),
+                );
+              },
+              child: const Card(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Row(
+                        children: <Widget>[
+                          Icon(Icons.history),
+                          Icon(Icons.insights),
+                          SizedBox(width: 8), // Pour ajouter un espace entre les icônes
+                          Text('Vos Entrainements')
+                        ],
+                      ),
+                      subtitle: Text('Retrouvez tous vos entrainements auquelles vous participez'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      
   }
 }

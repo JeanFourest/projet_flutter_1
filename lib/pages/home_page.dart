@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:projet_flutter_1/pages/profile.dart';
 
 
 class ContactInfo {
@@ -112,12 +113,12 @@ class _PageContactsState extends State<PageContacts> {
         title: Text(widget.title),
         actions: [
           TextButton(
-            child: Text("Importer vos contacts"),
+            child: Text("Profile"),
             onPressed: () {
-              setState(() {
-                _importerContacts(context);
-              });
-              //Navigator.pop(context); // Ferme l'alerte
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PageProfil(title: 'Profil',)));
             },
           ),
         ],
