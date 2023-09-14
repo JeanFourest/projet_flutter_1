@@ -1,13 +1,8 @@
-import 'package:mongo_dart/mongo_dart.dart';
-
 class User {
-  // A la creation d'un compte
-  final ObjectId id;
   final String username;
   final String password;
   final String email;
-  final String photo;
-  // Modif profil
+  String photo;
   final String phoneNumber;
   final int age;
   final String link;
