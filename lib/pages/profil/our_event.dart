@@ -44,6 +44,7 @@ class _CreerEventState extends State<CreerEvent> {
   late String _createEventTitle;
   late String _createEventTheme;
   late String _createEventPhoto;
+  late String _createEventDate;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -91,6 +92,18 @@ class _CreerEventState extends State<CreerEvent> {
               _createEventPhoto = value ?? '';
             },
           ),
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'Entrer une date'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Ne peut pas être vide';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _createEventDate = value ?? '';
+            },
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: ElevatedButton(
@@ -100,10 +113,11 @@ class _CreerEventState extends State<CreerEvent> {
                   final titleUpdate = _createEventTitle;
                   final themeUpdate = _createEventTheme;
                   final photoUpdate = _createEventPhoto;
+                  final dateUpdate = _createEventDate;
 
                   // Utilisez la méthode createEvent pour insérer un nouvel événement
                   await MongoDatabase.createEvent(
-                      titleUpdate, themeUpdate, photoUpdate);
+                      titleUpdate, themeUpdate, photoUpdate, dateUpdate);
 
                   // Affichez un message de succès
                   ScaffoldMessenger.of(context).showSnackBar(

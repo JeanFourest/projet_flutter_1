@@ -8,6 +8,7 @@ import 'package:projet_flutter_1/models/user.dart';
 import 'package:projet_flutter_1/pages/profil/our_event.dart';
 import 'package:projet_flutter_1/pages/profil/our_tournament.dart';
 import 'package:projet_flutter_1/pages/profil/edit_profile.dart';
+import 'package:projet_flutter_1/pages/profil/our_training.dart';
 
 class PageProfil extends StatefulWidget {
   const PageProfil({Key? key, required this.title});
@@ -108,7 +109,7 @@ class actionProfil extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    const OurTournament(title: 'Vos Compétitions'),
+                    const OurTournament(title: 'Vos Entrainements'),
               ),
             );
           },
@@ -133,6 +134,36 @@ class actionProfil extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const OurTraining(title: 'Vos Event'),
+              ),
+            );
+          },
+          child: const Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(Icons.add),
+                      Icon(Icons.school),
+                      SizedBox(
+                          width: 8), // Pour ajouter un espace entre les icônes
+                      Text('Créer un Entrainement')
+                    ],
+                  ),
+                  subtitle:
+                      Text('Retrouvez tous vos entrainement créées par vous'),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 1000),
         GestureDetector(
           onTap: () {
             Navigator.push(

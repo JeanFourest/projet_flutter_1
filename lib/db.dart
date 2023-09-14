@@ -7,6 +7,7 @@ class MongoDatabase {
   static late DbCollection userCollection;
   static late DbCollection eventCollection;
   static late DbCollection tournoisCollection;
+  static late DbCollection trainingCollection;
   static late DbCollection horseCollection;
 
   static Future<void> connect() async {
@@ -19,6 +20,7 @@ class MongoDatabase {
       userCollection = db.collection('users');
       eventCollection = db.collection('parties');
       tournoisCollection = db.collection('tournament');
+      trainingCollection = db.collection('training');
       horseCollection = db.collection('horses');
       print('Connexion à MongoDB réussie');
     } catch (e) {
@@ -160,12 +162,16 @@ class MongoDatabase {
 
   // ----------REQUETE-MONGODB-CREATE-EVENT-----------
   static Future<void> createEvent(
-      String title, String theme, String photo) async {
+      String title, String theme, String photo, String date) async {
     try {
       await eventCollection.insertOne({
+        'type': "party",
         'title': title,
-        'theme': theme,
         'photo': photo,
+        'theme': theme,
+        'status': true,
+        'date': date,
+        'dateTimeAdded': "10/03/2020 - 11h32",
       });
     } catch (e) {
       print('Erreur lors de la création de l\'événement: $e');
@@ -183,6 +189,26 @@ class MongoDatabase {
         'date': date,
         'users': participant,
         'title': title,
+        'dateTimeAdded': "10/03/2020 - 11h32",
+      });
+    } catch (e) {
+      print('Erreur lors de la création de l\'événement: $e');
+    }
+  }
+
+  // ----------REQUETE-MONGODB-CREATE-TOURNOIS-----------
+  static Future<void> createTraining(
+      String terrain, String duration, String discipline, String date) async {
+    try {
+      await trainingCollection.insertOne({
+        'type': "training",
+        'terrain': terrain,
+        'duration': duration,
+        'discipline': discipline,
+        'statue': "true",
+        'dateTimeAdded': "23/03/2014 - 15h33",
+        'date': date,
+        'user': ('6501bfc8317d438a2f369e4f')
       });
     } catch (e) {
       print('Erreur lors de la création de l\'événement: $e');
