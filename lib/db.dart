@@ -1,25 +1,25 @@
-  import 'dart:async';
-  import 'package:mongo_dart/mongo_dart.dart';
-  import 'package:projet_flutter_1/models/user.dart';
+import 'dart:async';
+import 'package:mongo_dart/mongo_dart.dart';
+import 'package:projet_flutter_1/models/user.dart';
 
-  class MongoDatabase {
-    static late DbCollection userCollection;
-    static late DbCollection horseCollection;
+class MongoDatabase {
+  static late DbCollection userCollection;
+  static late DbCollection horseCollection;
 
-    static Future<void> connect() async {
-      try {
-        print('STARTING CONNECTION');
-        //Connexion a la DB
-        var db = await Db.create(
-            'mongodb+srv://cavalier01:cavalier01@fluttercavalier.vik0exh.mongodb.net/fluttercavalier');
-        await db.open();
-        userCollection = db.collection('users');
-        horseCollection = db.collection('horses');
-        print('Connexion à MongoDB réussie');
-      } catch (e) {
-        print('Erreur de connexion à MongoDB: $e');
-      }
+  static Future<void> connect() async {
+    try {
+      print('STARTING CONNECTION');
+      //Connexion a la DB
+      var db = await Db.create(
+          'mongodb+srv://cavalier01:cavalier01@fluttercavalier.vik0exh.mongodb.net/fluttercavalier');
+      await db.open();
+      userCollection = db.collection('users');
+      horseCollection = db.collection('horses');
+      print('Connexion à MongoDB réussie');
+    } catch (e) {
+      print('Erreur de connexion à MongoDB: $e');
     }
+  }
 
   static Future<List<Map<String, dynamic>>> getAllUser() async {
     try {
@@ -152,8 +152,7 @@
     }
   }
   // ------------------------------REQUETE-MONGODB-EDIT-PROFIL------------------------------\\
-}
-
+/*
 static Future<List<Map<String, dynamic>>> getAllUser() async {
       try {
         final users = await userCollection.find().toList();
@@ -182,3 +181,5 @@ static Future<List<Map<String, dynamic>>> getAllUser() async {
       }
     }
   }
+  }*/
+}
