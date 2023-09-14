@@ -44,6 +44,14 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<!--
+	<key>NSCameraUsageDescription</key>
+	<string>Camera permission description</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone permission description</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library permission description</string>
+	-->
 	<true/>
 </dict>
 </plist>

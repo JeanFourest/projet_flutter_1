@@ -3,7 +3,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'dart:math';
-
+import 'package:projet_flutter_1/db.dart';
+import 'package:projet_flutter_1/pages/profil/our_event.dart';
 
 class ContactInfo {
   String nom = "";
@@ -21,88 +22,16 @@ class PageProfil extends StatefulWidget {
   State<PageProfil> createState() => _PageProfilState();
 }
 
+ Future<void> _fetchContacts() async {
+    var collection = MongoDatabase.db.collection('users');
+    var contacts = await collection.find().toList();
+    print(contacts);
+ }
+
+
 class _PageProfilState extends State<PageProfil> {
-  int _index = 0;
-  List<ContactInfo> contacts = [];
+ 
 
-  var _chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
-
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
-  void _importerContacts(BuildContext context) {
-    print("zdqesf");
-  }
-
-  void _AjoutContactFormulaire(BuildContext context) {
-    TextEditingController nomObservateur = TextEditingController();
-    TextEditingController prenomObservateur = TextEditingController();
-    TextEditingController numeroObservateur = TextEditingController();
-    TextEditingController emailObservateur = TextEditingController();
-
-    Widget annulerForm = TextButton(
-      child: const Text("Annuler"),
-      onPressed: () {
-        Navigator.pop(context); // Ferme l'alerte
-      },
-    );
-    Widget creerForm = TextButton(
-      child: const Text("Créer"),
-      onPressed: () {
-        setState(() {
-          // Créez une nouvelle instance de ContactInfo pour chaque carte
-          ContactInfo contact = ContactInfo();
-          contact.nom = nomObservateur.text;
-          contact.prenom = prenomObservateur.text;
-          contact.numero = numeroObservateur.text;
-          contact.email = emailObservateur.text;
-          contacts.add(contact);
-          _index++;
-        });
-        Navigator.pop(context); // Ferme l'alerte
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: const Text("Ajouter un Contact"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: nomObservateur,
-            decoration: const InputDecoration(labelText: 'Nom'),
-          ),
-          TextField(
-            controller: prenomObservateur,
-            decoration: const InputDecoration(labelText: 'Prénom'),
-          ),
-          TextField(
-            controller: numeroObservateur,
-            decoration: const InputDecoration(labelText: 'Numéro'),
-          ),
-          TextField(
-            controller: emailObservateur,
-            decoration: const InputDecoration(labelText: 'Email'),
-          ),
-        ],
-      ),
-      actions: [
-        annulerForm,
-        creerForm,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +67,7 @@ class _PageProfilState extends State<PageProfil> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const PageProfil(title: 'Vos Event'),
+                    builder: (context) => const OurEvent(title: 'Vos Event'),
                   ),
                 );
               },
