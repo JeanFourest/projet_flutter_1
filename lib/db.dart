@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:projet_flutter_1/models/user.dart';
 
 class MongoDatabase {
   static late DbCollection userCollection;
+  static late DbCollection eventCollection;
+  static late DbCollection tournoisCollection;
   static late DbCollection horseCollection;
 
   static Future<void> connect() async {
@@ -14,6 +17,8 @@ class MongoDatabase {
           'mongodb+srv://cavalier01:cavalier01@fluttercavalier.vik0exh.mongodb.net/fluttercavalier');
       await db.open();
       userCollection = db.collection('users');
+      eventCollection = db.collection('parties');
+      tournoisCollection = db.collection('tournament');
       horseCollection = db.collection('horses');
       print('Connexion à MongoDB réussie');
     } catch (e) {
@@ -152,6 +157,37 @@ class MongoDatabase {
     }
   }
   // ------------------------------REQUETE-MONGODB-EDIT-PROFIL------------------------------\\
+
+  // ----------REQUETE-MONGODB-CREATE-EVENT-----------
+  static Future<void> createEvent(
+      String title, String theme, String photo) async {
+    try {
+      await eventCollection.insertOne({
+        'title': title,
+        'theme': theme,
+        'photo': photo,
+      });
+    } catch (e) {
+      print('Erreur lors de la création de l\'événement: $e');
+    }
+  }
+
+  // ----------REQUETE-MONGODB-CREATE-TOURNOIS-----------
+  static Future<void> createTournois(String title, String adresse, String photo,
+      String date, List participant) async {
+    try {
+      await tournoisCollection.insertOne({
+        'type': "tournament",
+        'address': adresse,
+        'photo': photo,
+        'date': date,
+        'users': participant,
+        'title': title,
+      });
+    } catch (e) {
+      print('Erreur lors de la création de l\'événement: $e');
+    }
+  }
 /*
 static Future<List<Map<String, dynamic>>> getAllUser() async {
       try {

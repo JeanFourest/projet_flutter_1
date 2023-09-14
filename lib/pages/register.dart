@@ -44,7 +44,7 @@ class _Register extends State<Register> {
       if (img != null) {
         List<int> imageBytes = File(img.path).readAsBytesSync();
         String base64Image = base64Encode(imageBytes);
-        user.photo = base64Image;
+        //user.photo = base64Image;
         image = img;
       }
     });
@@ -163,7 +163,7 @@ class _Register extends State<Register> {
                         List<int> imageBytes =
                             File(image!.path).readAsBytesSync();
                         String base64Image = base64Encode(imageBytes);
-                        user.photo = base64Image;
+                        // user.photo = base64Image;
                       }
                       MongoDatabase.createUser(user);
                     }

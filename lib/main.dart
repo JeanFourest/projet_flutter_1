@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: Register(title: 'Register Page'),
+      home: PageContacts(title: 'Register Page'),
     );
   }
 }
