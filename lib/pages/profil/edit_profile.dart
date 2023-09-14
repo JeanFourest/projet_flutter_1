@@ -5,6 +5,10 @@ import 'dart:math';
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/models/user.dart';
 import 'package:projet_flutter_1/pages/profile.dart';
+import 'dart:convert'; // Pour base64Decode
+import 'dart:typed_data'; // Pour Uint8List
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class PageEditProfil extends StatefulWidget {
   const PageEditProfil({Key? key, required this.title});
@@ -109,8 +113,64 @@ class actionProfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Uint8List bytes = base64Decode(photo);
+    // Variable pour stocker les nouvelles données binaires de l'image de profil
+    Uint8List? newPhotoBytes;
+
+    // Fonction pour sélectionner une nouvelle image depuis la galerie
+    Future<void> pickImage() async {
+      final picker = ImagePicker();
+      final pickedImage = await picker.getImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        final imageBytes = await pickedImage.readAsBytes();
+        // Mettre à jour la variable newPhotoBytes avec les nouvelles données binaires
+        newPhotoBytes = Uint8List.fromList(imageBytes);
+      }
+    }
+
     return ListView(
       children: [
+        // Affichage de la photo
+        // Center(
+        //   child: CircleAvatar(
+        //     radius: 100, // Rayon du cercle
+        //     backgroundImage: MemoryImage(bytes), // Les données binaires de l'image
+        //   ),
+        // ),
+        // Affichage de la photo de profil avec CircleAvatar
+        Center(
+          child: CircleAvatar(
+            radius: 100, // Rayon du cercle
+            backgroundImage: newPhotoBytes != null
+                ? MemoryImage(newPhotoBytes!) // Nouvelles données binaires de l'image
+                : MemoryImage(bytes), // Les données binaires de l'image existante
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            // Appel de la fonction pour sélectionner une nouvelle image
+            pickImage();
+          },
+          child: Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: const Row(
+                    children: <Widget>[
+                      Icon(Icons.edit),
+                      Icon(Icons.portrait),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text('Modifier votre photo de profil')
+                    ],
+                  ),
+                  subtitle: Text('Cliquez pour changer la photo'),
+                ),
+              ],
+            ),
+          ),
+        ),
         GestureDetector(
           onTap: () {
             showDialog(
@@ -222,43 +282,43 @@ class actionProfil extends StatelessWidget {
             ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return alertDialogFormPhoto(
-                  initialText: photo, // number de base
-                  onSubmitted: (value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      // ptit message en bas
-                      SnackBar(content: Text("modifié par => $value")),
-                    );
-                    Navigator.of(context).pop();
-                  },
-                );
-              },
-            );
-          },
-          child: Card(
-            child: Column(
-              children: [
-                ListTile(
-                  title: const Row(
-                    children: <Widget>[
-                      Icon(Icons.edit),
-                      Icon(Icons.portrait),
-                      SizedBox(
-                          width: 8), // Pour ajouter un espace entre les icônes
-                      Text('Modifier votre photo de profil')
-                    ],
-                  ),
-                  subtitle: Text(photo),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // GestureDetector(
+        //   onTap: () {
+        //     showDialog(
+        //       context: context,
+        //       builder: (context) {
+        //         return alertDialogFormPhoto(
+        //           initialText: photo, // number de base
+        //           onSubmitted: (value) {
+        //             ScaffoldMessenger.of(context).showSnackBar(
+        //               // ptit message en bas
+        //               SnackBar(content: Text("modifié par => $value")),
+        //             );
+        //             Navigator.of(context).pop();
+        //           },
+        //         );
+        //       },
+        //     );
+        //   },
+        //   child: Card(
+        //     child: Column(
+        //       children: [
+        //         ListTile(
+        //           title: const Row(
+        //             children: <Widget>[
+        //               Icon(Icons.edit),
+        //               Icon(Icons.portrait),
+        //               SizedBox(
+        //                   width: 8), // Pour ajouter un espace entre les icônes
+        //               Text('Modifier votre photo de profil')
+        //             ],
+        //           ),
+        //           subtitle: Text(photo),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         const SizedBox(width: 10),
         GestureDetector(
           onTap: () {
@@ -687,6 +747,7 @@ class alertDialogFormPhoto extends StatefulWidget {
 class _alertDialogFormPhotoState extends State<alertDialogFormPhoto> {
   late String _photoEdit;
   final _formKey = GlobalKey<FormState>();
+  File? _imageFile; // Pour stocker la nouvelle image sélectionnée
 
   @override
   void initState() {
@@ -694,53 +755,79 @@ class _alertDialogFormPhotoState extends State<alertDialogFormPhoto> {
     _photoEdit = widget.initialText;
   }
 
+  // Méthode pour afficher un dialogue de sélection d'image
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Entrez votre nouvelle photo'),
+      title: const Text('Modifier votre photo de profil'),
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextFormField(
-              initialValue: _photoEdit, //precharge lancien numberrr
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Veuillez entrer une photo';
-                }
-                return null;
+            ElevatedButton(
+              onPressed: () {
+                _pickImage(); // Ouvrir la boîte de dialogue de sélection d'image
               },
-              onSaved: (value) {
-                // enregistre le nouveau pseudo
-                _photoEdit = value ?? '';
-              },
+              child: const Text('Uploader une photo'),
             ),
+            const SizedBox(height: 16),
+
+            // Afficher la nouvelle image sélectionnée si elle existe
+            if (_imageFile != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.file(
+                    _imageFile!,
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width,
+                    height: 300,
+                  ),
+                ),
+              )
+            else
+              const Text(
+                "Aucune image sélectionnée",
+                style: TextStyle(fontSize: 20),
+              ),
+
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  final photoUpdate = _photoEdit;
+                  if (_imageFile != null) {
+                    // Convertir l'image en base64
+                    List<int> imageBytes = await _imageFile!.readAsBytes();
+                    String base64Image = base64Encode(imageBytes);
+                    final photoUpdate = base64Image;
 
-                  // Utilisez la méthode updateUserUsername pour mettre à jour le nom d'utilisateur
-                  await MongoDatabase.updateUserPhoto(
-                      ('6501bfc8317d438a2f369e4f'), photoUpdate);
+                    // Utilisez la méthode updateUserPhoto pour mettre à jour la photo
+                    await MongoDatabase.updateUserPhoto(
+                        ('6501bfc8317d438a2f369e4f'), photoUpdate);
 
-                  // Affichez un message de succès
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('photo mise à jour avec succès'),
-                    ),
-                  );
-                  // ptite redirection pour actualiser le pseudo
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const PageProfil(title: 'Vos Event'),
-                    ),
-                  );
+                    // Affichez un message de succès
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Photo mise à jour avec succès'),
+                      ),
+                    );
+                  }
+
+                  // Fermez la boîte de dialogue après la mise à jour
+                  Navigator.of(context).pop();
                 }
               },
               child: const Text('Modifier'),
@@ -751,6 +838,7 @@ class _alertDialogFormPhotoState extends State<alertDialogFormPhoto> {
     );
   }
 }
+
 // ALERTE DIALOG FORM --------------------------------
 
 class alertDialogFormPassword extends StatefulWidget {

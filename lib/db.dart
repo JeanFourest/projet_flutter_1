@@ -180,6 +180,30 @@ static Future<List<Map<String, dynamic>>> getAllUser() async {
         print('Erreur lors de la création du compte: $e');
       }
     }
+
+    static Future<User?> getUserByUsername(String username) async {
+      try {
+        final user = await userCollection.findOne(where.eq('username', username));
+        if (user != null) {
+          return User(
+            username: user['username'],
+            password: user['password'],
+            email: user['email'],
+            photo: user['photo'],
+            phoneNumber: user['phoneNumber'],
+            age: user['age'],
+            link: user['link'],
+            isAdmin: user['isAdmin'],
+            isDP: user['isDP'],
+          );
+        }
+        return null; // L'utilisateur n'a pas été trouvé
+      } catch (e) {
+        print('Erreur lors de la récupération des données de l\'utilisateur: $e');
+        return null;
+      }
+    }
+
   }
   }*/
 }
