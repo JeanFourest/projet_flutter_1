@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:projet_flutter_1/db.dart';
-import 'package:projet_flutter_1/main.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.title});
@@ -62,11 +59,11 @@ class _EventPageState extends State<EventPage> {
             : ListView.builder(
                 itemCount: allParties.length,
                 itemBuilder: (context, index) =>
-                    _buildContactCard(allParties[index])));
+                    _buildCard(allParties[index])));
   }
 }
 
-Widget _buildContactCard(flux) {
+Widget _buildCard(flux) {
   /* print(flux.description); */
 
   return Card(

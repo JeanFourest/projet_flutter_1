@@ -1,8 +1,5 @@
 import 'dart:async';
-
 import 'package:mongo_dart/mongo_dart.dart';
-import 'package:projet_flutter_1/models/user.dart';
-import 'package:projet_flutter_1/models/parties.dart';
 
 class MongoDatabase {
   static late DbCollection userCollection;
@@ -30,6 +27,16 @@ class MongoDatabase {
     }
   }
 
+  static Future<List<Map<String, dynamic>>> getAllUser() async {
+    try {
+      final users = await userCollection.find().toList();
+      return users;
+    } catch (e) {
+      print('Error message get doc: $e');
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+
   static Future<List<Map<String, dynamic>>> getParties() async {
     try {
       final parties = await partiesCollections.find().toList();
@@ -45,11 +52,13 @@ class MongoDatabase {
       final parties = await partiesCollections.find().toList();
       final training = await trainingCollections.find().toList();
       final tournament = await tournamentCollections.find().toList();
+      final users = await userCollection.find().toList();
 
       final List<Map<String, dynamic>> combined = [
         ...parties,
         ...training,
-        ...tournament
+        ...tournament,
+        ...users
       ];
 
       return combined;

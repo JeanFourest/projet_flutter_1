@@ -8,7 +8,7 @@ class Parties {
   final String title;
   final String photo;
   final String theme;
-  final bool status;
+  final String status;
   final String date;
   final String dateTimeAdded;
   final Array users;

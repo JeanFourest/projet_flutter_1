@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Training {
@@ -9,15 +8,12 @@ class Training {
   final String duration;
   final String discipline;
   final String date;
-  final bool status;
+  final String status;
   final String dateTimeAdded;
-  final Array users;
+  final ObjectId user;
 
   const Training(
-      {
-      // Get user id
-      required this.id,
-      //need type for widget later
+      {required this.id,
       required this.type,
       required this.terrain,
       required this.duration,
@@ -25,13 +21,5 @@ class Training {
       required this.date,
       required this.status,
       required this.dateTimeAdded,
-      required this.users
-
-      // Modif profil
-      /* this.phoneNumber = '',
-        this.age = 0,
-        this.link = '',
-        this.isAdmin = false,
-        this.isDP = false, */
-      });
+      required this.user});
 }

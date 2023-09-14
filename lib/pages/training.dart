@@ -36,11 +36,11 @@ class _TrainingPageState extends State<TrainingPage> {
         ),
         body: (ListView.builder(
             itemCount: flux.length,
-            itemBuilder: (context, index) => _buildContactCard(flux[index]))));
+            itemBuilder: (context, index) => _buildCard(flux[index]))));
   }
 }
 
-Widget _buildContactCard(flux) {
+Widget _buildCard(flux) {
   /* print(flux.description); */
   return Card(
       shape: BeveledRectangleBorder(

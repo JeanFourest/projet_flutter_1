@@ -13,18 +13,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class Event {
-  final String title;
-  final String description;
-  final String date;
-
-  Event({
-    required this.title,
-    required this.description,
-    required this.date,
-  });
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   var flux;
 
@@ -123,8 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ? const CircularProgressIndicator()
             : ListView.builder(
                 itemCount: flux.length,
-                itemBuilder: (context, index) =>
-                    _buildContactCard(flux[index])));
+                itemBuilder: (context, index) => _buildCard(flux[index])));
     /* floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
@@ -133,12 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Widget _buildContactCard(flux) {
+Widget _buildCard(flux) {
   /* print(flux.description); */
 
   print(flux);
 
-  if (flux['type'] == "party") {
+  if (flux['type'] == "party" && flux['status'] == "true") {
     //parties
     return Card(
         shape: BeveledRectangleBorder(
@@ -150,7 +137,10 @@ Widget _buildContactCard(flux) {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(flux['theme'], style: const TextStyle(fontSize: 20)),
+              Text("type: ${flux['type']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text("theme: ${flux['theme']}",
+                  style: const TextStyle(fontSize: 20)),
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
               Text(flux['dateTimeAdded']),
@@ -169,15 +159,19 @@ Widget _buildContactCard(flux) {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(flux['address'], style: const TextStyle(fontSize: 20)),
+              Text("type: ${flux['type']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text("address: ${flux['address']}",
+                  style: const TextStyle(fontSize: 20)),
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
               Text(flux['dateTimeAdded']),
+              /* Text(flux['dateTimeAdded']), */
               TextButton(child: const Text("Join"), onPressed: () {})
             ],
           ),
         ));
-  } else if (flux['type'] == "training") {
+  } else if (flux['type'] == "training" && flux['status'] == "true") {
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -189,34 +183,28 @@ Widget _buildContactCard(flux) {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("type: ${flux['type']}",
+                  style: const TextStyle(fontSize: 20)),
               Text("terrain: ${flux['terrain']}",
                   style: const TextStyle(fontSize: 20)),
               Text("duration: ${flux['duration']}",
                   style: const TextStyle(fontSize: 20)),
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
-              Text(flux['dateTimeAdded']),
-              TextButton(child: const Text("Join"), onPressed: () {})
+              Text(flux['dateTimeAdded'])
             ],
           ),
         ));
-  } else {
+  } else if (flux['username'] != null) {
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Colors.blue, width: 1.0)),
         margin: const EdgeInsets.all(10.0),
         child: ListTile(
-          title: const Text("title", style: TextStyle(fontSize: 25)),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("description", style: TextStyle(fontSize: 20)),
-              const Text("When: date", style: TextStyle(fontSize: 20)),
-              const Text("date time added"),
-              TextButton(child: const Text("Join"), onPressed: () {})
-            ],
-          ),
-        ));
+            title: Text("New user added: ${flux['username']}",
+                style: const TextStyle(fontSize: 25))));
+  } else {
+    return const Card();
   }
 }
