@@ -48,7 +48,6 @@ Widget _buildContactCard(flux) {
           side: const BorderSide(color: Colors.blue, width: 1.0)),
       margin: const EdgeInsets.all(10.0),
       child: ListTile(
-        leading: const Icon(Icons.person),
         title: Text(flux.title, style: const TextStyle(fontSize: 25)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

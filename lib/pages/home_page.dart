@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/pages/event.dart';
 import 'package:projet_flutter_1/pages/tournament.dart';
 import 'package:projet_flutter_1/pages/training.dart';
@@ -25,18 +26,29 @@ class Event {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  /* int _counter = 0;
+  var flux;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  getAll() async {
+    var events = await MongoDatabase.getAllEvents();
+    return events;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Call parties() inside initState
+    getAll().then((result) {
+      setState(() {
+        flux = result;
+      });
+      print(flux.length);
     });
-  } */
+  }
 
-  final flux = [
+/*   final flux = [
     Event(title: "title", description: "description", date: "date"),
     Event(title: "party", description: "anniversary", date: "10/10/2000")
-  ];
+  ]; */
 
   String pages = "Profile";
 
@@ -107,9 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-        body: (ListView.builder(
-            itemCount: flux.length,
-            itemBuilder: (context, index) => _buildContactCard(flux[index]))));
+        body: flux == null
+            ? const CircularProgressIndicator()
+            : ListView.builder(
+                itemCount: flux.length,
+                itemBuilder: (context, index) =>
+                    _buildContactCard(flux[index])));
     /* floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
@@ -120,21 +135,88 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Widget _buildContactCard(flux) {
   /* print(flux.description); */
-  return Card(
-      shape: BeveledRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: Colors.blue, width: 1.0)),
-      margin: const EdgeInsets.all(10.0),
-      child: ListTile(
-        leading: const Icon(Icons.person),
-        title: Text(flux.title, style: const TextStyle(fontSize: 25)),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(flux.description, style: const TextStyle(fontSize: 20)),
-            Text(flux.date),
-            TextButton(child: const Text("Join"), onPressed: () {})
-          ],
-        ),
-      ));
+
+  print(flux);
+
+  if (flux['type'] == "party") {
+    //parties
+    return Card(
+        shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Colors.blue, width: 1.0)),
+        margin: const EdgeInsets.all(10.0),
+        child: ListTile(
+          title: Text(flux['title'], style: const TextStyle(fontSize: 25)),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(flux['theme'], style: const TextStyle(fontSize: 20)),
+              Text("When: ${flux['date']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text(flux['dateTimeAdded']),
+              TextButton(child: const Text("Join"), onPressed: () {})
+            ],
+          ),
+        ));
+  } else if (flux['type'] == "tournament") {
+    return Card(
+        shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Colors.blue, width: 1.0)),
+        margin: const EdgeInsets.all(10.0),
+        child: ListTile(
+          title: Text(flux['title'], style: const TextStyle(fontSize: 25)),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(flux['address'], style: const TextStyle(fontSize: 20)),
+              Text("When: ${flux['date']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text(flux['dateTimeAdded']),
+              TextButton(child: const Text("Join"), onPressed: () {})
+            ],
+          ),
+        ));
+  } else if (flux['type'] == "training") {
+    return Card(
+        shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Colors.blue, width: 1.0)),
+        margin: const EdgeInsets.all(10.0),
+        child: ListTile(
+          title: Text("training: ${flux['discipline']}",
+              style: const TextStyle(fontSize: 25)),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("terrain: ${flux['terrain']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text("duration: ${flux['duration']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text("When: ${flux['date']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text(flux['dateTimeAdded']),
+              TextButton(child: const Text("Join"), onPressed: () {})
+            ],
+          ),
+        ));
+  } else {
+    return Card(
+        shape: BeveledRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Colors.blue, width: 1.0)),
+        margin: const EdgeInsets.all(10.0),
+        child: ListTile(
+          title: const Text("title", style: TextStyle(fontSize: 25)),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("description", style: TextStyle(fontSize: 20)),
+              const Text("When: date", style: TextStyle(fontSize: 20)),
+              const Text("date time added"),
+              TextButton(child: const Text("Join"), onPressed: () {})
+            ],
+          ),
+        ));
+  }
 }
