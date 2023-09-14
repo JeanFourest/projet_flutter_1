@@ -1,16 +1,12 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:projet_flutter_1/db.dart';
+import 'package:projet_flutter_1/models/user.dart';
 import 'package:projet_flutter_1/pages/profil/our_event.dart';
-
-class ContactInfo {
-  String nom = "";
-  String prenom = "";
-  String numero = "";
-  String email = "";
-}
+import 'package:projet_flutter_1/pages/profil/our_tournament.dart';
 
 class PageProfil extends StatefulWidget {
   const PageProfil({Key? key, required this.title});
@@ -21,19 +17,31 @@ class PageProfil extends StatefulWidget {
   State<PageProfil> createState() => _PageProfilState();
 }
 
-Future<void> _fetchContacts() async {
- //var collection = MongoDatabase.db.collection('users');
-  //var contacts = await collection.find().toList();
-  //print(contacts);
-}
-
 class _PageProfilState extends State<PageProfil> {
+  List<User> users = []; 
+  String username = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData(); // Permet d'appeler une fonction async puisque aussi non ça ne marche pas de charger un async directe
+  }
+
+  Future<void> loadUserData() async {
+    var getUser = await MongoDatabase.getAllUser();
+    var getUsername = getUser[1]; // Accédez au deuxième utilisateur
+    var usernameStocke = getUsername['username'];
+    setState(() {
+      username = usernameStocke; // Mettez à jour la variable username ici
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(username),
         actions: <Widget>[
           IconButton(
             icon: const Icon(
@@ -91,7 +99,8 @@ class actionProfil extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const PageProfil(title: 'Vos Event'),
+                builder: (context) =>
+                    const OurTournament(title: 'Vos Compétitions'),
               ),
             );
           },

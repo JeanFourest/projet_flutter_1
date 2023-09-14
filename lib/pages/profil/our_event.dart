@@ -3,13 +3,6 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class ContactInfo {
-  String nom = "";
-  String prenom = "";
-  String numero = "";
-  String email = "";
-}
-
 class OurEvent extends StatefulWidget {
   const OurEvent({Key? key, required this.title});
 
