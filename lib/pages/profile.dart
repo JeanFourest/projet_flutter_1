@@ -7,6 +7,7 @@ import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/models/user.dart';
 import 'package:projet_flutter_1/pages/profil/our_event.dart';
 import 'package:projet_flutter_1/pages/profil/our_tournament.dart';
+import 'package:projet_flutter_1/pages/profil/edit_profile.dart';
 
 class PageProfil extends StatefulWidget {
   const PageProfil({Key? key, required this.title});
@@ -18,7 +19,7 @@ class PageProfil extends StatefulWidget {
 }
 
 class _PageProfilState extends State<PageProfil> {
-  List<User> users = []; 
+  List<User> users = [];
   String username = "";
 
   @override
@@ -29,7 +30,7 @@ class _PageProfilState extends State<PageProfil> {
 
   Future<void> loadUserData() async {
     var getUser = await MongoDatabase.getAllUser();
-    var getUsername = getUser[1]; // Accédez au deuxième utilisateur
+    var getUsername = getUser[0]; // Accédez au deuxième utilisateur
     var usernameStocke = getUsername['username'];
     setState(() {
       username = usernameStocke; // Mettez à jour la variable username ici
@@ -45,10 +46,17 @@ class _PageProfilState extends State<PageProfil> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(
-              Icons.settings,
+              Icons.manage_accounts,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PageEditProfil(title: ''),
+                ),
+              );
+            },
           )
         ],
       ),
