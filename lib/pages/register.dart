@@ -57,7 +57,7 @@ class _Register extends State<Register> {
         builder: (BuildContext context) {
           return AlertDialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: const Text('Please choose media to select'),
             content: Container(
               height: MediaQuery.of(context).size.height / 6,
@@ -91,40 +91,40 @@ class _Register extends State<Register> {
         ),
         body: Center(
             child: Column(children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                    children: [
-                      TextFormField(
-                        controller: usernameController,
-                        validator: (value) => value!.isEmpty ? 'Champ requis' : null,
-                        decoration:
-                        const InputDecoration(labelText: "Nom d'utilisateur"),
-                      ),
-                      TextFormField(
-                        controller: emailController,
-                        validator: (value) => value!.isEmpty ? 'Champ requis' : null,
-                        decoration: const InputDecoration(labelText: 'Email'),
-                      ),
-                      TextFormField(
-                        obscureText: true,
-                        controller: passwordController,
-                        validator: (value) => value!.isEmpty ? 'Champ requis' : null,
-                        decoration: const InputDecoration(labelText: 'Mot de passe'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          myAlert();
-                        },
-                        child: const Text('Upload Photo'),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      //if image not null show the image
-                      //if image null show text
-                      image != null
-                          ? Padding(
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: usernameController,
+                  validator: (value) => value!.isEmpty ? 'Champ requis' : null,
+                  decoration:
+                      const InputDecoration(labelText: "Nom d'utilisateur"),
+                ),
+                TextFormField(
+                  controller: emailController,
+                  validator: (value) => value!.isEmpty ? 'Champ requis' : null,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                ),
+                TextFormField(
+                  obscureText: true,
+                  controller: passwordController,
+                  validator: (value) => value!.isEmpty ? 'Champ requis' : null,
+                  decoration: const InputDecoration(labelText: 'Mot de passe'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    myAlert();
+                  },
+                  child: const Text('Upload Photo'),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                //if image not null show the image
+                //if image null show text
+                image != null
+                    ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
@@ -137,43 +137,42 @@ class _Register extends State<Register> {
                           ),
                         ),
                       )
-                          : const Text(
+                    : const Text(
                         "No Image",
                         style: TextStyle(fontSize: 20),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Creating account')));
+                TextButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Creating account')));
 
-                            User user = User(
-                              username: usernameController.text,
-                              password: passwordController.text,
-                              email: emailController.text,
-                              photo: '',
-                              phoneNumber: '',
-                              age: 0,
-                              link: '',
-                              isAdmin: false,
-                              isDP: false,
-                            );
+                      User user = User(
+                        username: usernameController.text,
+                        password: passwordController.text,
+                        email: emailController.text,
+                        photo: '',
+                        phoneNumber: '',
+                        age: 0,
+                        link: '',
+                        isAdmin: false,
+                        isDP: false,
+                      );
 
-                            if (image != null) {
-                              List<int> imageBytes = File(image!.path).readAsBytesSync();
-                              String base64Image = base64Encode(imageBytes);
-                              user.photo = base64Image;
-                            }
-                            MongoDatabase.createUser(user);
-                          }
-                        },
-                        child: const Text('Submit'),
-                      ),
-
-                    ],
-
+                      if (image != null) {
+                        List<int> imageBytes =
+                            File(image!.path).readAsBytesSync();
+                        String base64Image = base64Encode(imageBytes);
+                        user.photo = base64Image;
+                      }
+                      MongoDatabase.createUser(user);
+                    }
+                  },
+                  child: const Text('Submit'),
                 ),
-              ),
-            ])));
+              ],
+            ),
+          ),
+        ])));
   }
 }
