@@ -214,6 +214,35 @@ class MongoDatabase {
       print('Erreur lors de la création de l\'événement: $e');
     }
   }
+   // REQUETE POUR AFFICHER LES TRUCS 
+    static Future<List<Map<String, dynamic>>> getEvents() async {
+    try {
+      final parties = await eventCollection.find().toList();
+      return parties;
+    } catch (e) {
+      print(e);
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+  static Future<List<Map<String, dynamic>>> getTournament() async {
+    try {
+      final parties = await tournoisCollection.find().toList();
+      return parties;
+    } catch (e) {
+      print(e);
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+    static Future<List<Map<String, dynamic>>> getTraining() async {
+    try {
+      final parties = await trainingCollection.find().toList();
+      return parties;
+    } catch (e) {
+      print(e);
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+
 /*
 static Future<List<Map<String, dynamic>>> getAllUser() async {
       try {

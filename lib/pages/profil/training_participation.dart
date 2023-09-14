@@ -4,13 +4,13 @@ import 'package:projet_flutter_1/pages/event.dart';
 import 'package:projet_flutter_1/pages/tournament.dart';
 import 'package:projet_flutter_1/pages/training.dart';
 
-class eventParticiped extends StatefulWidget {
-  const eventParticiped({super.key, required this.title});
+class trainingParticiped extends StatefulWidget {
+  const trainingParticiped({super.key, required this.title});
 
   final String title;
 
   @override
-  State<eventParticiped> createState() => _eventParticipedState();
+  State<trainingParticiped> createState() => _trainingParticipedState();
 }
 
 class Event {
@@ -25,11 +25,11 @@ class Event {
   });
 }
 
-class _eventParticipedState extends State<eventParticiped> {
+class _trainingParticipedState extends State<trainingParticiped> {
   var flux;
 
   getAll() async {
-    var events = await MongoDatabase.getEvents();
+    var events = await MongoDatabase.getTraining();
     return events;
   }
 

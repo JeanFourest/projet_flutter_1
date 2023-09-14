@@ -9,6 +9,9 @@ import 'package:projet_flutter_1/pages/profil/our_event.dart';
 import 'package:projet_flutter_1/pages/profil/our_tournament.dart';
 import 'package:projet_flutter_1/pages/profil/edit_profile.dart';
 import 'package:projet_flutter_1/pages/profil/our_training.dart';
+import 'package:projet_flutter_1/pages/profil/event_participation.dart';
+import 'package:projet_flutter_1/pages/profil/training_participation.dart';
+import 'package:projet_flutter_1/pages/profil/tournament_participation.dart';
 
 class PageProfil extends StatefulWidget {
   const PageProfil({Key? key, required this.title});
@@ -169,7 +172,7 @@ class actionProfil extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const PageProfil(title: 'Vos Event'),
+                builder: (context) => const eventParticiped(title: 'Vos Event'),
               ),
             );
           },
@@ -198,7 +201,8 @@ class actionProfil extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const PageProfil(title: 'Vos Event'),
+                builder: (context) =>
+                    const tournamentParticiped(title: 'Vos Event'),
               ),
             );
           },
@@ -228,7 +232,8 @@ class actionProfil extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const PageProfil(title: 'Vos Event'),
+                builder: (context) =>
+                    const trainingParticiped(title: 'Vos Event'),
               ),
             );
           },
