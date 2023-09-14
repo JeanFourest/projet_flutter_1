@@ -10,42 +10,26 @@ class EventPage extends StatefulWidget {
   State<EventPage> createState() => _EventPageState();
 }
 
-class Event {
-  final String title;
-  final String description;
-  final String date;
-
-  Event({
-    required this.title,
-    required this.description,
-    required this.date,
-  });
-}
-
 class _EventPageState extends State<EventPage> {
+  //la variable allParties est initialisée à null pour recevoir les données de la base de données
   var allParties;
 
+  //la fonction parties() permet de récupérer les données de la base de données
   parties() async {
     var parties = await MongoDatabase.getParties();
     return parties;
   }
 
+  //la fonction initState() permet d'initialiser la variable allParties avec les données de la base de données
   @override
   void initState() {
     super.initState();
-    // Call parties() inside initState
     parties().then((result) {
       setState(() {
         allParties = result;
       });
-      /* print(allParties.length); */
     });
   }
-
-  final flux = [
-    Event(title: "title", description: "description", date: "date"),
-    Event(title: "party", description: "anniversary", date: "10/10/2000")
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +40,7 @@ class _EventPageState extends State<EventPage> {
         ),
         body: allParties == null
             ? const CircularProgressIndicator()
+            //ListView.builder permet de créer une liste de cartes avec les données de la base de données
             : ListView.builder(
                 itemCount: allParties.length,
                 itemBuilder: (context, index) =>
@@ -63,9 +48,8 @@ class _EventPageState extends State<EventPage> {
   }
 }
 
+//la fonction _buildCard permet de créer une carte avec les données de la base de données
 Widget _buildCard(flux) {
-  /* print(flux.description); */
-
   return Card(
       shape: BeveledRectangleBorder(
           borderRadius: BorderRadius.circular(10),

@@ -14,10 +14,7 @@ class Parties {
   final Array users;
 
   const Parties(
-      {
-      // Get user id
-      required this.id,
-      //need type for widget later
+      {required this.id,
       required this.type,
       required this.title,
       required this.photo,
@@ -25,13 +22,5 @@ class Parties {
       required this.status,
       required this.date,
       required this.dateTimeAdded,
-      required this.users
-
-      // Modif profil
-      /* this.phoneNumber = '',
-        this.age = 0,
-        this.link = '',
-        this.isAdmin = false,
-        this.isDP = false, */
-      });
+      required this.users});
 }

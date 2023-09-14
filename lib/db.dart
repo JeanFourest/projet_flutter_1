@@ -19,14 +19,13 @@ class MongoDatabase {
       partiesCollections = db.collection('parties');
       trainingCollections = db.collection('training');
       tournamentCollections = db.collection('tournament');
-      /*  var contacts = await userCollection.find().toList();
-      print(contacts); */
       print('Connexion à MongoDB réussie');
     } catch (e) {
       print('Erreur de connexion à MongoDB: $e');
     }
   }
 
+  //-------------REQUETE-MONGODB-ALL-USERS-------------
   static Future<List<Map<String, dynamic>>> getAllUser() async {
     try {
       final users = await userCollection.find().toList();
@@ -37,16 +36,17 @@ class MongoDatabase {
     }
   }
 
+  //-------------REQUETE-MONGODB-ALL-PARTIES-------------
   static Future<List<Map<String, dynamic>>> getParties() async {
     try {
       final parties = await partiesCollections.find().toList();
       return parties;
     } catch (e) {
-      print(e);
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
 
+  //-------------REQUETE-MONGODB-ALL-EVENTS-COMBINED------------
   static Future<List<Map<String, dynamic>>> getAllEvents() async {
     try {
       final parties = await partiesCollections.find().toList();
@@ -63,7 +63,6 @@ class MongoDatabase {
 
       return combined;
     } catch (e) {
-      print(e);
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }

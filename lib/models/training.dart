@@ -1,7 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Training {
-  // A la creation d'un compte
   final ObjectId id;
   final String type;
   final String terrain;

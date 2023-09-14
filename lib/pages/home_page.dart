@@ -14,13 +14,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //la variable flux est initialisée à null pour recevoir les données de la base de données
   var flux;
 
+  //la fonction getAll() permet de récupérer les données de la base de données
   getAll() async {
     var events = await MongoDatabase.getAllEvents();
     return events;
   }
 
+  //la fonction initState() permet d'initialiser la variable flux avec les données de la base de données
   @override
   void initState() {
     super.initState();
@@ -33,11 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-/*   final flux = [
-    Event(title: "title", description: "description", date: "date"),
-    Event(title: "party", description: "anniversary", date: "10/10/2000")
-  ]; */
-
+  //la variable pages permet de changer de page avec le dropdownbutton
   String pages = "Profile";
 
   @override
@@ -47,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
           actions: [
+            //dropdownbutton pour changer de page entre profile, event party, training et tournament
             DropdownButton<String>(
               padding: const EdgeInsets.only(right: 20),
               icon: const Icon(Icons.menu),
@@ -84,8 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 title: "Tournament",
                               )));
                 }
-                /* print(pages); */
               },
+              //items du dropdownbutton
               items: const [
                 DropdownMenuItem<String>(
                   value: "profile",
@@ -109,22 +109,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: flux == null
             ? const CircularProgressIndicator()
+            //ListView.builder permet de construire une liste de cartes en utilisant la function _buildCard
             : ListView.builder(
                 itemCount: flux.length,
                 itemBuilder: (context, index) => _buildCard(flux[index])));
-    /* floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), */
   }
 }
 
+//la fonction _buildCard permet de construire une carte en fonction du type de l'évènement
 Widget _buildCard(flux) {
-  /* print(flux.description); */
-
-  print(flux);
-
   if (flux['type'] == "party" && flux['status'] == "true") {
     //parties
     return Card(
@@ -149,6 +142,7 @@ Widget _buildCard(flux) {
           ),
         ));
   } else if (flux['type'] == "tournament") {
+    //tournament
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -173,6 +167,7 @@ Widget _buildCard(flux) {
         ));
   } else if (flux['type'] == "training" && flux['status'] == "true") {
     return Card(
+        //training
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Colors.blue, width: 1.0)),
@@ -196,6 +191,7 @@ Widget _buildCard(flux) {
           ),
         ));
   } else if (flux['username'] != null) {
+    //new user
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -205,6 +201,7 @@ Widget _buildCard(flux) {
             title: Text("New user added: ${flux['username']}",
                 style: const TextStyle(fontSize: 25))));
   } else {
+    //default si aucun évènement n'est trouvé
     return const Card();
   }
 }

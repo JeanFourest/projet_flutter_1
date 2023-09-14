@@ -22,6 +22,7 @@ class Event {
 }
 
 class _TournamentPageState extends State<TournamentPage> {
+  //des données predefinies pour tester l'affichage
   final flux = [
     Event(title: "title", description: "description", date: "date"),
     Event(title: "party", description: "anniversary", date: "10/10/2000")
@@ -34,14 +35,15 @@ class _TournamentPageState extends State<TournamentPage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
         ),
+        //ListView.builder permet de créer une liste de cartes avec les données de la base de données
         body: (ListView.builder(
             itemCount: flux.length,
             itemBuilder: (context, index) => _buildCard(flux[index]))));
   }
 }
 
+//la fonction _buildCard permet de créer une carte avec les données de la base de données
 Widget _buildCard(flux) {
-  /* print(flux.description); */
   return Card(
       shape: BeveledRectangleBorder(
           borderRadius: BorderRadius.circular(10),
