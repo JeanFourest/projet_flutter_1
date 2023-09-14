@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:projet_flutter_1/db.dart';
+import 'package:projet_flutter_1/pages/profile.dart';
 import 'package:projet_flutter_1/pages/home_page.dart';
+import 'package:mongo_dart/mongo_dart.dart';
+import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/pages/register.dart';
 
 void main() async {
