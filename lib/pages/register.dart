@@ -87,7 +87,7 @@ class _Register extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Upload Image'),
+          title: const Text('Ajouter une image'),
         ),
         body: Center(
             child: Column(children: [
@@ -145,7 +145,7 @@ class _Register extends State<Register> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Creating account')));
+                          const SnackBar(content: Text('Création d\'un compte ...')));
 
                       User user = User(
                         username: usernameController.text,

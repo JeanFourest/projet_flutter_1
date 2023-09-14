@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:projet_flutter_1/pages/profile.dart';
+import 'package:projet_flutter_1/pages/register.dart';
 
 class ContactInfo {
   String nom = "";
@@ -118,6 +119,17 @@ class _PageContactsState extends State<PageContacts> {
                       builder: (context) => const PageProfil(
                             title: 'Profil',
                           )));
+            },
+          ),
+          TextButton(
+            child: Text("Register"),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Register(
+                        title: 'Register Page',
+                      )));
             },
           ),
         ],

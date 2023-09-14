@@ -18,6 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const PageContacts(title: 'Home Page'),
+          // '/login': (context) => Login(),
+          // '/register': (context) => const Register(title: 'Register Page'),
+          // '/profile': (context) => PageProfil(username: 'floedit'),
+        },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -27,7 +34,7 @@ class MyApp extends StatelessWidget {
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // home: Register(title: 'Register Page'),
       // home: ProfilePage(username: 'uvyvys'),
-      home: PageProfil(title: 'Profile Page'),
+      // home: PageProfil(title: 'Profile Page'),
     );
   }
 }

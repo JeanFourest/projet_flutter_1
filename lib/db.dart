@@ -38,7 +38,13 @@ class MongoDatabase {
         'password': user.password,
         'email': user.email,
         'photo': user.photo,
+        'phoneNumber': '',
+        'age': 0,
+        'link': '',
+        'isAdmin': false,
+        'isDP': false,
       });
+      print('Utilisateur : $user.username a été créé avec succès');
     } catch (e) {
       print('Erreur lors de la création du compte: $e');
     }
