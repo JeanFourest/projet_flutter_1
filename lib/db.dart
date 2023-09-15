@@ -203,6 +203,19 @@ class MongoDatabase {
   }
 
   // ------------------------------REQUETE-MONGODB-EDIT-PROFIL------------------------------\\
+  // ----------REQUETE-MONGODB-EDIT-UPDATE-Horses----------
+  static Future<void> updateUserHorses(
+      String userId, List userHorsesEdited) async {
+    try {
+      await userCollection.update(
+        where.id(ObjectId.parse(
+            userId)), // Obligez d'utiliser ça parceque c des object id ('0000')
+        modify.set('horses', userHorsesEdited),
+      );
+    } catch (e) {
+      print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
+    }
+  }
 
   // ----------REQUETE-MONGODB-CREATE-EVENT-----------
   static Future<void> createEvent(
