@@ -269,6 +269,7 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
+
   static Future<List<Map<String, dynamic>>> getTournament() async {
     try {
       final parties = await tournoisCollection.find().toList();

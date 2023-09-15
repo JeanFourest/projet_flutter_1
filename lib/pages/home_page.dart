@@ -51,6 +51,20 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
           actions: [
+            //bouton refresh pour rafraichir la page
+            IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MyHomePage(
+                            title: 'Home Page',
+                          )),
+                  (Route<dynamic> route) => false,
+                );
+              },
+              icon: const Icon(Icons.refresh),
+            ),
             //dropdownbutton pour changer de page entre profile, event party, training et tournament
             DropdownButton<String>(
               padding: const EdgeInsets.only(right: 20),
@@ -165,7 +179,6 @@ Widget _buildCard(flux) {
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
               Text(flux['dateTimeAdded']),
-              /* Text(flux['dateTimeAdded']), */
               TextButton(child: const Text("Join"), onPressed: () {})
             ],
           ),
