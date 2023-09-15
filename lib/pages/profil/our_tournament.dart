@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:projet_flutter_1/db.dart';
+import 'package:projet_flutter_1/pages/profile.dart';
 
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/models/user.dart';
@@ -96,19 +95,25 @@ class _OurTournamentState extends State<OurTournament> {
           )
         ],
       ),
-      body: const creerTournois(),
+      body: const CreerTournois(),
     );
   }
 }
 
-class creerTournois extends StatefulWidget {
-  const creerTournois({super.key});
+class CreerTournois extends StatefulWidget {
+  const CreerTournois({Key? key}) : super(key: key);
 
   @override
-  _creerTournoisState createState() => _creerTournoisState();
+  _CreerTournoisState createState() => _CreerTournoisState();
 }
 
-class _creerTournoisState extends State<creerTournois> {
+class _CreerTournoisState extends State<CreerTournois> {
+  late String _createTournoisTitle;
+  late String _createTournoisAdresse;
+  late String _createTournoisPhoto;
+  late String _createTournoisDate;
+  late List<String> _createTournoisParticipants = [];
+
   final _keyForm = GlobalKey<FormState>();
   XFile? image;
 
@@ -181,34 +186,68 @@ class _creerTournoisState extends State<creerTournois> {
           TextFormField(
             decoration: const InputDecoration(hintText: 'Entrer un titre'),
             validator: (value) {
-              // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
               if (value == null || value.isEmpty) {
-                return 'Ne peut pas etre vide';
+                return 'Ne peut pas être vide';
               }
               return null;
+            },
+            onSaved: (value) {
+              _createTournoisTitle = value ?? '';
             },
           ),
           TextFormField(
             decoration: const InputDecoration(
                 hintText: 'Entrer un thème (Soirée/Repas/Apéro)'),
             validator: (value) {
-              // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
               if (value == null || value.isEmpty) {
-                return 'Ne peut pas etre vide';
+                return 'Ne peut pas être vide';
               }
               return null;
+            },
+            onSaved: (value) {
+              _createTournoisAdresse = value ?? '';
             },
           ),
           TextFormField(
-            decoration: const InputDecoration(hintText: 'Entrer un titre'),
+            decoration: const InputDecoration(hintText: 'Entrer une photo'),
             validator: (value) {
-              // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
               if (value == null || value.isEmpty) {
-                return 'Ne peut pas etre vide';
+                return 'Ne peut pas être vide';
               }
               return null;
             },
+            onSaved: (value) {
+              _createTournoisPhoto = value ?? '';
+            },
           ),
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'Entrer une date'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Ne peut pas être vide';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _createTournoisDate = value ?? '';
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+                hintText:
+                    'Entrez le pseudo des participants en les séparant par une virgule'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Peut pas etre vide';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              if (value != null) {
+                _createTournoisParticipants =
+                    value.split(',').map((e) => e.trim()).toList();
+              }
+            },
           ElevatedButton(
             onPressed: () {
               myAlert();
@@ -241,14 +280,31 @@ class _creerTournoisState extends State<creerTournois> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_keyForm.currentState!.validate()) {
-                  // validate fait tourner tous les validator => true/false
+                  _keyForm.currentState!.save();
+                  final titleUpdate = _createTournoisTitle;
+                  final adresseUpdate = _createTournoisAdresse;
+                  final photoUpdate = _createTournoisPhoto;
+                  final dateUpdate = _createTournoisDate;
+                  final participantsUpdate = _createTournoisParticipants;
+
+                  // Utilisez la méthode createTournois pour insérer un nouveau tournoi
+                  await MongoDatabase.createTournois(titleUpdate, adresseUpdate,
+                      photoUpdate, dateUpdate, participantsUpdate);
+
+                  // Affichez un message de succès
                   ScaffoldMessenger.of(context).showSnackBar(
-                    // ptit message en bas
                     const SnackBar(
-                        content: Text(
-                            'Événement envoyé aux admins en attente de validation')),
+                      content: Text('Tournoi créé avec succès'),
+                    ),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const PageProfil(title: 'Vos Tournois'),
+                    ),
                   );
                 }
               },
