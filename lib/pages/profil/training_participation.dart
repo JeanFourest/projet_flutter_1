@@ -4,13 +4,13 @@ import 'package:projet_flutter_1/pages/event.dart';
 import 'package:projet_flutter_1/pages/tournament.dart';
 import 'package:projet_flutter_1/pages/training.dart';
 
-class eventParticiped extends StatefulWidget {
-  const eventParticiped({super.key, required this.title});
+class trainingParticiped extends StatefulWidget {
+  const trainingParticiped({super.key, required this.title});
 
   final String title;
 
   @override
-  State<eventParticiped> createState() => _eventParticipedState();
+  State<trainingParticiped> createState() => _trainingParticipedState();
 }
 
 class Event {
@@ -25,11 +25,11 @@ class Event {
   });
 }
 
-class _eventParticipedState extends State<eventParticiped> {
+class _trainingParticipedState extends State<trainingParticiped> {
   var flux;
 
   getAll() async {
-    var events = await MongoDatabase.getEvents();
+    var events = await MongoDatabase.getTraining();
     return events;
   }
 
@@ -109,26 +109,27 @@ Widget _buildContactCard(flux) {
 
   print(flux);
 
-  if (flux['type'] == "party" && flux['status'] == "true") {
-    //parties
+  if (flux['type'] == "training") {
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Colors.blue, width: 1.0)),
         margin: const EdgeInsets.all(10.0),
         child: ListTile(
-          title: Text(flux['title'], style: const TextStyle(fontSize: 25)),
+          title: Text("training: ${flux['discipline']}",
+              style: const TextStyle(fontSize: 25)),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("type: ${flux['type']}",
                   style: const TextStyle(fontSize: 20)),
-              Text("theme: ${flux['theme']}",
+              Text("terrain: ${flux['terrain']}",
+                  style: const TextStyle(fontSize: 20)),
+              Text("duration: ${flux['duration']}",
                   style: const TextStyle(fontSize: 20)),
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
-              Text(flux['dateTimeAdded']),
-              TextButton(child: const Text("Join"), onPressed: () {})
+              Text(flux['dateTimeAdded'])
             ],
           ),
         ));
