@@ -4,6 +4,7 @@ import 'package:projet_flutter_1/pages/home_page.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/pages/register.dart';
+import 'package:projet_flutter_1/pages/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Home Page'),
+        // '/login': (context) => Login(),
+        // '/register': (context) => const Register(title: 'Register Page'),
+        // '/profile': (context) => PageProfil(username: 'floedit'),
+      },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -24,7 +32,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: PageContacts(title: 'Register Page'),
+      // home: Register(title: 'Register Page'),
+      // home: ProfilePage(username: 'uvyvys'),
+      // home: PageProfil(title: 'Profile Page'),
     );
   }
 }

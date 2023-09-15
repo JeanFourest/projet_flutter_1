@@ -1,14 +1,8 @@
-import 'package:mongo_dart/mongo_dart.dart';
-
 class User {
-  // A la creation d'un compte
-
-
-  //final ObjectId id; => CONFLIT
   final String username;
   final String password;
   final String email;
-  final String photo;
+  String photo;
   final String phoneNumber;
   final int age;
   final String link;
@@ -16,7 +10,6 @@ class User {
   final bool isDP;
 
   User({
-    //required this.id, => CONFLIT
     required this.username,
     required this.password,
     required this.email,
