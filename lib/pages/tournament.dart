@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_flutter_1/db.dart';
 
 class TournamentPage extends StatefulWidget {
   const TournamentPage({super.key, required this.title});
@@ -9,24 +10,26 @@ class TournamentPage extends StatefulWidget {
   State<TournamentPage> createState() => _TournamentPageState();
 }
 
-class Event {
-  final String title;
-  final String description;
-  final String date;
-
-  Event({
-    required this.title,
-    required this.description,
-    required this.date,
-  });
-}
-
 class _TournamentPageState extends State<TournamentPage> {
-  //des données predefinies pour tester l'affichage
-  final flux = [
-    Event(title: "title", description: "description", date: "date"),
-    Event(title: "party", description: "anniversary", date: "10/10/2000")
-  ];
+  //la variable allTournaments est initialisée à null pour recevoir les données de la base de données
+  var allTournaments;
+
+  //la fonction tournaments() permet de récupérer les données de la base de données
+  tournaments() async {
+    var tournaments = await MongoDatabase.getTournament();
+    return tournaments;
+  }
+
+  //la fonction initState() permet d'initialiser la variable allTournaments avec les données de la base de données
+  @override
+  void initState() {
+    super.initState();
+    tournaments().then((result) {
+      setState(() {
+        allTournaments = result;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +39,12 @@ class _TournamentPageState extends State<TournamentPage> {
           title: Text(widget.title),
         ),
         //ListView.builder permet de créer une liste de cartes avec les données de la base de données
-        body: (ListView.builder(
-            itemCount: flux.length,
-            itemBuilder: (context, index) => _buildCard(flux[index]))));
+        body: allTournaments == null
+            ? const CircularProgressIndicator()
+            : ListView.builder(
+                itemCount: allTournaments.length,
+                itemBuilder: (context, index) =>
+                    _buildCard(allTournaments[index])));
   }
 }
 
@@ -50,12 +56,15 @@ Widget _buildCard(flux) {
           side: const BorderSide(color: Colors.blue, width: 1.0)),
       margin: const EdgeInsets.all(10.0),
       child: ListTile(
-        title: Text(flux.title, style: const TextStyle(fontSize: 25)),
+        title: Text(flux['title'], style: const TextStyle(fontSize: 25)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(flux.description, style: const TextStyle(fontSize: 20)),
-            Text(flux.date),
+            Text("type: ${flux['type']}", style: const TextStyle(fontSize: 20)),
+            Text("address: ${flux['address']}",
+                style: const TextStyle(fontSize: 20)),
+            Text("When: ${flux['date']}", style: const TextStyle(fontSize: 20)),
+            Text(flux['dateTimeAdded']),
             TextButton(child: const Text("Join"), onPressed: () {})
           ],
         ),
