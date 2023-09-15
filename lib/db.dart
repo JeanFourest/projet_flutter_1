@@ -201,7 +201,8 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
-    // ----------REQUETE-MONGODB-EDIT-UPDATE-Horses----------
+
+  // ----------REQUETE-MONGODB-EDIT-UPDATE-Horses----------
   static Future<void> updateUserHorses(
       String userId, List userHorsesEdited) async {
     try {
@@ -302,6 +303,19 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
+
+  static Future<void> updateTrainingValidation(
+      ObjectId trainingID, String status) async {
+    try {
+      await trainingCollection.update(
+        where.id(trainingID),
+        modify.set('status', status),
+      );
+    } catch (e) {
+      print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
+    }
+  }
+
 /*
 static Future<List<Map<String, dynamic>>> getAllUser() async {
       try {

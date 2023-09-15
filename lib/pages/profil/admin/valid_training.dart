@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/pages/event.dart';
@@ -74,29 +76,39 @@ Widget _buildContactCard(flux) {
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
               Text(flux['dateTimeAdded']),
+              Text(flux['status']),
               ButtonBar(
                 children: [
+                  if (flux['status'] == "true")
+                    TextButton(
+                      onPressed: () {
+                        MongoDatabase.updateTrainingValidation(
+                            flux['_id'], "false");
+                        Navigator.pushAndRemoveUntil(
+                          context as BuildContext,
+                          MaterialPageRoute(
+                              builder: (context) => const validTraining(
+                                    title: 'Vos Entrainements',
+                                  )),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                      child: const Text('VALIDER'),
+                    ),
                   TextButton(
                     onPressed: () {
-                      /* MongoDatabase.updateTraining(flux['_id'], "true");
-                      Navigator.push(
-                        context,
+                      MongoDatabase.updateTrainingValidation(
+                          flux['_id'], "true");
+                      Navigator.pushAndRemoveUntil(
+                        context as BuildContext,
                         MaterialPageRoute(
-                            builder: (context) => const training()),
-                      ); */
+                            builder: (context) => const validTraining(
+                                  title: 'Vos Entrainements',
+                                )),
+                        (Route<dynamic> route) => false,
+                      );
                     },
                     child: const Text('VALIDER'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      /* MongoDatabase.deleteTraining(flux['_id']);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const training()),
-                      ); */
-                    },
-                    child: const Text('REFUSER'),
                   ),
                 ],
               )
