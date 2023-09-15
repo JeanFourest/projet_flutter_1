@@ -58,37 +58,6 @@ class _eventParticipedState extends State<eventParticiped> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
-          actions: [
-            DropdownButton<String>(
-              padding: const EdgeInsets.only(right: 20),
-              icon: const Icon(Icons.menu),
-              onChanged: (String? newValue) {
-                setState(() {
-                  pages = newValue!;
-                });
-
-                /* print(pages); */
-              },
-              items: const [
-                DropdownMenuItem<String>(
-                  value: "profile",
-                  child: Text("Profile"),
-                ),
-                DropdownMenuItem<String>(
-                  value: "event party",
-                  child: Text("Event Party"),
-                ),
-                DropdownMenuItem<String>(
-                  value: "training",
-                  child: Text("Training"),
-                ),
-                DropdownMenuItem<String>(
-                  value: "tournament",
-                  child: Text("Tournament"),
-                ),
-              ],
-            )
-          ],
         ),
         body: flux == null
             ? const CircularProgressIndicator()

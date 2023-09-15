@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/models/user.dart';
+import 'package:projet_flutter_1/pages/profil/admin/valid_training.dart';
 import 'package:projet_flutter_1/pages/profil/our_event.dart';
 import 'package:projet_flutter_1/pages/profil/our_tournament.dart';
 import 'package:projet_flutter_1/pages/profil/edit_profile.dart';
@@ -172,6 +173,37 @@ class actionProfil extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
+                builder: (context) =>
+                    const validTraining(title: 'Vos Entrainements'),
+              ),
+            );
+          },
+          child: const Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      Icon(Icons.add),
+                      Icon(Icons.event_available),
+                      SizedBox(
+                          width: 8), // Pour ajouter un espace entre les icônes
+                      Text('Valider un entrainement')
+                    ],
+                  ),
+                  subtitle: Text(
+                      'accepter ou refuser un entrainement créées par les cavaliers'),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
                 builder: (context) => const eventParticiped(title: 'Vos Event'),
               ),
             );
@@ -186,7 +218,7 @@ class actionProfil extends StatelessWidget {
                       Icon(Icons.celebration),
                       SizedBox(
                           width: 8), // Pour ajouter un espace entre les icônes
-                      Text('Vos Compétitions')
+                      Text('Vos Events')
                     ],
                   ),
                   subtitle: Text(

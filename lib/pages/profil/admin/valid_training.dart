@@ -4,33 +4,21 @@ import 'package:projet_flutter_1/pages/event.dart';
 import 'package:projet_flutter_1/pages/tournament.dart';
 import 'package:projet_flutter_1/pages/training.dart';
 
-class trainingParticiped extends StatefulWidget {
-  const trainingParticiped({super.key, required this.title});
+class validTraining extends StatefulWidget {
+  const validTraining({super.key, required this.title});
 
   final String title;
 
   @override
-  State<trainingParticiped> createState() => _trainingParticipedState();
+  State<validTraining> createState() => _validTrainingState();
 }
 
-class Event {
-  final String title;
-  final String description;
-  final String date;
-
-  Event({
-    required this.title,
-    required this.description,
-    required this.date,
-  });
-}
-
-class _trainingParticipedState extends State<trainingParticiped> {
+class _validTrainingState extends State<validTraining> {
   var flux;
 
   getAll() async {
-    var events = await MongoDatabase.getTraining();
-    return events;
+    var trainings = await MongoDatabase.getTraining();
+    return trainings;
   }
 
   @override
@@ -45,13 +33,6 @@ class _trainingParticipedState extends State<trainingParticiped> {
     });
   }
 
-/*   final flux = [
-    Event(title: "title", description: "description", date: "date"),
-    Event(title: "party", description: "anniversary", date: "10/10/2000")
-  ]; */
-
-  String pages = "Profile";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,20 +46,14 @@ class _trainingParticipedState extends State<trainingParticiped> {
                 itemCount: flux.length,
                 itemBuilder: (context, index) =>
                     _buildContactCard(flux[index])));
-    /* floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), */
   }
 }
 
 Widget _buildContactCard(flux) {
-  /* print(flux.description); */
-
   print(flux);
 
   if (flux['type'] == "training") {
+    //parties
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -98,7 +73,33 @@ Widget _buildContactCard(flux) {
                   style: const TextStyle(fontSize: 20)),
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
-              Text(flux['dateTimeAdded'])
+              Text(flux['dateTimeAdded']),
+              ButtonBar(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      /* MongoDatabase.updateTraining(flux['_id'], "true");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const training()),
+                      ); */
+                    },
+                    child: const Text('VALIDER'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      /* MongoDatabase.deleteTraining(flux['_id']);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const training()),
+                      ); */
+                    },
+                    child: const Text('REFUSER'),
+                  ),
+                ],
+              )
             ],
           ),
         ));
