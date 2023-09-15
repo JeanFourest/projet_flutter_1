@@ -201,7 +201,8 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
-    // ----------REQUETE-MONGODB-EDIT-UPDATE-Horses----------
+
+  // ----------REQUETE-MONGODB-EDIT-UPDATE-Horses----------
   static Future<void> updateUserHorses(
       String userId, List userHorsesEdited) async {
     try {
@@ -219,12 +220,12 @@ class MongoDatabase {
 
   // ----------REQUETE-MONGODB-CREATE-EVENT-----------
   static Future<void> createEvent(
-      String title, String theme, String photo, String date) async {
+      String title, String theme, String date) async {
     try {
       await eventCollection.insertOne({
         'type': "party",
         'title': title,
-        'photo': photo,
+        'photo': "",
         'theme': theme,
         'status': true,
         'date': date,
@@ -303,7 +304,7 @@ class MongoDatabase {
     }
   }
 
-   // ----------REQUETE-MONGODB-CREATE-EVENT-PARTICIPER----------
+  // ----------REQUETE-MONGODB-CREATE-EVENT-PARTICIPER----------
   static Future<void> ParticipantEventUpdate(
       String usernameParticipant, String eventId) async {
     try {

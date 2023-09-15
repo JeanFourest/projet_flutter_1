@@ -186,7 +186,7 @@ class actionProfil extends StatelessWidget {
                       Icon(Icons.celebration),
                       SizedBox(
                           width: 8), // Pour ajouter un espace entre les icônes
-                      Text('Vos Compétitions')
+                      Text('Vos Événements')
                     ],
                   ),
                   subtitle: Text(

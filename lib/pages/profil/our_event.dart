@@ -47,7 +47,6 @@ class CreerEvent extends StatefulWidget {
 class _CreerEventState extends State<CreerEvent> {
   late String _createEventTitle;
   late String _createEventTheme;
-  late String _createEventPhoto;
   late String _createEventDate;
 
   final _formKey = GlobalKey<FormState>();
@@ -145,18 +144,6 @@ class _CreerEventState extends State<CreerEvent> {
               _createEventTheme = value ?? '';
             },
           ),
-          TextFormField(
-            decoration: const InputDecoration(hintText: 'Entrer une photo'),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Ne peut pas être vide';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _createEventPhoto = value ?? '';
-            },
-          ),
           
           TextFormField(
             decoration: const InputDecoration(hintText: 'Entrer une date'),
@@ -207,12 +194,11 @@ class _CreerEventState extends State<CreerEvent> {
                   _formKey.currentState!.save();
                   final titleUpdate = _createEventTitle;
                   final themeUpdate = _createEventTheme;
-                  final photoUpdate = _createEventPhoto;
                   final dateUpdate = _createEventDate;
 
                   // Utilisez la méthode createEvent pour insérer un nouvel événement
                   await MongoDatabase.createEvent(
-                      titleUpdate, themeUpdate, photoUpdate, dateUpdate);
+                      titleUpdate, themeUpdate, dateUpdate);
 
                   // Affichez un message de succès
                   ScaffoldMessenger.of(context).showSnackBar(
