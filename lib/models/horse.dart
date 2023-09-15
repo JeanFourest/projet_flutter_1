@@ -1,4 +1,4 @@
-class User {
+class Horses {
   final String username;
   final String password;
   final String email;
@@ -9,7 +9,7 @@ class User {
   final bool isAdmin;
   final bool isDP;
 
-  User({
+  Horses({
     required this.username,
     required this.password,
     required this.email,

@@ -12,7 +12,6 @@ class MongoDatabase {
   static late DbCollection partiesCollections;
   static late DbCollection trainingCollections;
   static late DbCollection tournamentCollections;
-
   static Future<void> connect() async {
     try {
       print('STARTING CONNECTION');
@@ -202,6 +201,19 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
+    // ----------REQUETE-MONGODB-EDIT-UPDATE-Horses----------
+  static Future<void> updateUserHorses(
+      String userId, List userHorsesEdited) async {
+    try {
+      await userCollection.update(
+        where.id(ObjectId.parse(
+            userId)), // Obligez d'utiliser ça parceque c des object id ('0000')
+        modify.set('horses', userHorsesEdited),
+      );
+    } catch (e) {
+      print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
+    }
+  }
 
   // ------------------------------REQUETE-MONGODB-EDIT-PROFIL------------------------------\\
 
@@ -259,8 +271,9 @@ class MongoDatabase {
       print('Erreur lors de la création de l\'événement: $e');
     }
   }
-   // REQUETE POUR AFFICHER LES TRUCS 
-    static Future<List<Map<String, dynamic>>> getEvents() async {
+
+  // REQUETE POUR AFFICHER LES TRUCS
+  static Future<List<Map<String, dynamic>>> getEvents() async {
     try {
       final parties = await eventCollection.find().toList();
       return parties;
@@ -269,6 +282,7 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
+
   static Future<List<Map<String, dynamic>>> getTournament() async {
     try {
       final parties = await tournoisCollection.find().toList();
@@ -278,7 +292,8 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
-    static Future<List<Map<String, dynamic>>> getTraining() async {
+
+  static Future<List<Map<String, dynamic>>> getTraining() async {
     try {
       final parties = await trainingCollection.find().toList();
       return parties;
@@ -287,7 +302,6 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
-
 /*
 static Future<List<Map<String, dynamic>>> getAllUser() async {
       try {

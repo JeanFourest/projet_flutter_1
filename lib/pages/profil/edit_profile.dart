@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:projet_flutter_1/db.dart';
+import 'package:projet_flutter_1/models/horse.dart';
 import 'package:projet_flutter_1/models/user.dart';
 import 'package:projet_flutter_1/pages/profile.dart';
 import 'dart:convert'; // Pour base64Decode
@@ -29,12 +30,7 @@ class _PageEditProfilState extends State<PageEditProfil> {
   String FFE = "";
   String DP = "";
   String password = "";
-
-  @override
-  void initState() {
-    super.initState();
-    loadUserData(); // Permet d'appeler une fonction async puisque aussi non ça ne marche pas de charger un async directe
-  }
+  late List<String> horses = [];
 
   Future<void> loadUserData() async {
     var getUser = await MongoDatabase.getAllUser();
@@ -47,6 +43,8 @@ class _PageEditProfilState extends State<PageEditProfil> {
     var FFEStocke = getUserInfo['ffe'];
     var DPStocke = getUserInfo['dp'];
     var passwordStocke = getUserInfo['password'];
+    var horsesStocke = getUserInfo['horses'] as List<dynamic>;
+    List<String> horsesList = horsesStocke.cast<String>();
 
     setState(() {
       username = usernameStocke; // met a jour
@@ -57,26 +55,34 @@ class _PageEditProfilState extends State<PageEditProfil> {
       FFE = FFEStocke; // met a jour
       DP = DPStocke; // met a jour
       password = passwordStocke; // met a jour
+      horses = horsesList; // met a jour
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    horses = [];
+    loadUserData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Editer votre profil | " + username),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.badge,
-              color: Colors.black,
-            ),
-            onPressed: () {},
-          )
-        ],
-      ),
-      body: actionProfil(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text("Editer votre profil | " + username),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.badge,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            )
+          ],
+        ),
+        body: actionProfil(
           username: username,
           phone: phone,
           email: email,
@@ -84,8 +90,9 @@ class _PageEditProfilState extends State<PageEditProfil> {
           age: age,
           FFE: FFE,
           DP: DP,
-          password: password),
-    );
+          password: password,
+          horses: horses,
+        ));
   }
 }
 
@@ -98,6 +105,7 @@ class actionProfil extends StatelessWidget {
   final String FFE;
   final String DP;
   final String password;
+  final List<String> horses;
 
   const actionProfil({
     Key? key,
@@ -109,6 +117,7 @@ class actionProfil extends StatelessWidget {
     required this.FFE,
     required this.DP,
     required this.password,
+    this.horses = const [],
   }) : super(key: key);
 
   @override
@@ -130,6 +139,7 @@ class actionProfil extends StatelessWidget {
 
     return ListView(
       children: [
+        /*
         // Affichage de la photo
         // Center(
         //   child: CircleAvatar(
@@ -145,7 +155,7 @@ class actionProfil extends StatelessWidget {
                 ? MemoryImage(newPhotoBytes!) // Nouvelles données binaires de l'image
                 : MemoryImage(bytes), // Les données binaires de l'image existante
           ),
-        ),
+        ),*/
         GestureDetector(
           onTap: () {
             // Appel de la fonction pour sélectionner une nouvelle image
@@ -463,6 +473,43 @@ class actionProfil extends StatelessWidget {
                     ],
                   ),
                   subtitle: Text(DP),
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return alertDialogFormHorses(
+                  initialText: horses, // number de base
+                  onSubmitted: (value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      // ptit message en bas
+                      SnackBar(content: Text("modifié par => $value")),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            );
+          },
+          child: Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: const Row(
+                    children: <Widget>[
+                      Icon(Icons.edit),
+                      Icon(Icons.add_shopping_cart),
+                      SizedBox(
+                          width: 8), // Pour ajouter un espace entre les icônes
+                      Text('Modifier vos chevaux')
+                    ],
+                  ),
+                  subtitle: Text(horses.toString()),
                 ),
               ],
             ),
@@ -1152,6 +1199,92 @@ class _alertDialogFormDPState extends State<alertDialogFormDP> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('FFE mise à jour avec succès'),
+                    ),
+                  );
+                  // ptite redirection pour actualiser le pseudo
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const PageProfil(title: 'Vos Event'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Modifier'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+// ALERTE DIALOG FORM --------------------------------
+
+class alertDialogFormHorses extends StatefulWidget {
+  final List initialText;
+  final Function(List)? onSubmitted;
+
+  const alertDialogFormHorses({
+    Key? key,
+    required this.initialText,
+    this.onSubmitted,
+  }) : super(key: key);
+
+  @override
+  _alertDialogFormHorsesState createState() => _alertDialogFormHorsesState();
+}
+
+class _alertDialogFormHorsesState extends State<alertDialogFormHorses> {
+  late List _HorsesEdit;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _HorsesEdit = widget.initialText;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Entrez vos chevaux'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Veuillez entrer un liens';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                if (value != null) {
+                  _HorsesEdit = value
+                      .split(',')
+                      .map((e) => e.trim())
+                      .toList(); // Convertir string en dynamique
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  final HorsesUpdate = _HorsesEdit;
+
+                  // Utilisez la méthode updateUserUsername pour mettre à jour le nom d'utilisateur
+                  await MongoDatabase.updateUserHorses(
+                      ('6501bfc8317d438a2f369e4f'), HorsesUpdate as List);
+
+                  // Affichez un message de succès
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Chevaux mis à jour avec succès'),
                     ),
                   );
                   // ptite redirection pour actualiser le pseudo

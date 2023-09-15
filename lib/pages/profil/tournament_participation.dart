@@ -109,8 +109,7 @@ Widget _buildContactCard(flux) {
 
   print(flux);
 
-  if (flux['type'] == "party") {
-    //parties
+  if (flux['type'] == "tournament") {
     return Card(
         shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -121,73 +120,19 @@ Widget _buildContactCard(flux) {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(flux['theme'], style: const TextStyle(fontSize: 20)),
-              Text("When: ${flux['date']}",
+              Text("type: ${flux['type']}",
                   style: const TextStyle(fontSize: 20)),
-              Text(flux['dateTimeAdded']),
-              TextButton(child: const Text("Join"), onPressed: () {})
-            ],
-          ),
-        ));
-  } else if (flux['type'] == "tournament") {
-    return Card(
-        shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Colors.blue, width: 1.0)),
-        margin: const EdgeInsets.all(10.0),
-        child: ListTile(
-          title: Text(flux['title'], style: const TextStyle(fontSize: 25)),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(flux['address'], style: const TextStyle(fontSize: 20)),
-              Text("When: ${flux['date']}",
-                  style: const TextStyle(fontSize: 20)),
-              Text(flux['dateTimeAdded']),
-              TextButton(child: const Text("Join"), onPressed: () {})
-            ],
-          ),
-        ));
-  } else if (flux['type'] == "training") {
-    return Card(
-        shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Colors.blue, width: 1.0)),
-        margin: const EdgeInsets.all(10.0),
-        child: ListTile(
-          title: Text("training: ${flux['discipline']}",
-              style: const TextStyle(fontSize: 25)),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("terrain: ${flux['terrain']}",
-                  style: const TextStyle(fontSize: 20)),
-              Text("duration: ${flux['duration']}",
+              Text("address: ${flux['address']}",
                   style: const TextStyle(fontSize: 20)),
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
               Text(flux['dateTimeAdded']),
+              /* Text(flux['dateTimeAdded']), */
               TextButton(child: const Text("Join"), onPressed: () {})
             ],
           ),
         ));
   } else {
-    return Card(
-        shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Colors.blue, width: 1.0)),
-        margin: const EdgeInsets.all(10.0),
-        child: ListTile(
-          title: const Text("title", style: TextStyle(fontSize: 25)),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("description", style: TextStyle(fontSize: 20)),
-              const Text("When: date", style: TextStyle(fontSize: 20)),
-              const Text("date time added"),
-              TextButton(child: const Text("Join"), onPressed: () {})
-            ],
-          ),
-        ));
+    return const Card();
   }
 }

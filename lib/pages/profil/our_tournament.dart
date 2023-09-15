@@ -248,6 +248,7 @@ class _CreerTournoisState extends State<CreerTournois> {
                     value.split(',').map((e) => e.trim()).toList();
               }
             },
+          ),
           ElevatedButton(
             onPressed: () {
               myAlert();

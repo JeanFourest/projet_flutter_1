@@ -60,7 +60,9 @@ Widget _buildCard(flux) {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(flux['theme'], style: const TextStyle(fontSize: 20)),
+            Text("type: ${flux['type']}", style: const TextStyle(fontSize: 20)),
+            Text("theme: ${flux['theme']}",
+                style: const TextStyle(fontSize: 20)),
             Text("When: ${flux['date']}", style: const TextStyle(fontSize: 20)),
             Text(flux['dateTimeAdded']),
             TextButton(child: const Text("Join"), onPressed: () {})
