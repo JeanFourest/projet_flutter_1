@@ -227,7 +227,7 @@ class MongoDatabase {
         'title': title,
         'photo': "",
         'theme': theme,
-        'status': true,
+        'status': "true",
         'date': date,
         'dateTimeAdded': "10/03/2020 - 11h32",
       });
