@@ -302,6 +302,20 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
+
+   // ----------REQUETE-MONGODB-CREATE-EVENT-PARTICIPER----------
+  static Future<void> ParticipantEventUpdate(
+      String usernameParticipant, String eventId) async {
+    try {
+      await userCollection.update(
+        where.id(ObjectId.parse(
+            eventId)), // Obligez d'utiliser ça parceque c des object id ('0000')
+        modify.set('participant', usernameParticipant),
+      );
+    } catch (e) {
+      print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
+    }
+  }
 /*
 static Future<List<Map<String, dynamic>>> getAllUser() async {
       try {

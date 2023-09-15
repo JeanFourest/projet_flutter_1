@@ -156,7 +156,7 @@ Widget _buildCard(flux) {
               Text("When: ${flux['date']}",
                   style: const TextStyle(fontSize: 20)),
               Text(flux['dateTimeAdded']),
-              TextButton(child: const Text("Join"), onPressed: () {})
+              TextButton(child: const Text("Participer"), onPressed: () {})
             ],
           ),
         ));
