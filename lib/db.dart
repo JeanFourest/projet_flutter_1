@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:projet_flutter_1/models/user.dart';
 
 class MongoDatabase {
   static late DbCollection userCollection;
-  static late DbCollection horseCollection;
   static late DbCollection eventCollection;
   static late DbCollection tournoisCollection;
   static late DbCollection trainingCollection;
+  static late DbCollection horseCollection;
   static late DbCollection partiesCollections;
   static late DbCollection trainingCollections;
   static late DbCollection tournamentCollections;
@@ -32,6 +33,7 @@ class MongoDatabase {
     }
   }
 
+  //-------------REQUETE-MONGODB-ALL-USERS-------------
   static Future<List<Map<String, dynamic>>> getAllUser() async {
     try {
       final users = await userCollection.find().toList();
@@ -168,6 +170,38 @@ class MongoDatabase {
       print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
     }
   }
+
+  //-------------REQUETE-MONGODB-ALL-PARTIES-------------
+  static Future<List<Map<String, dynamic>>> getParties() async {
+    try {
+      final parties = await partiesCollections.find().toList();
+      return parties;
+    } catch (e) {
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+
+  //-------------REQUETE-MONGODB-ALL-EVENTS-COMBINED------------
+  static Future<List<Map<String, dynamic>>> getAllEvents() async {
+    try {
+      final parties = await partiesCollections.find().toList();
+      final training = await trainingCollections.find().toList();
+      final tournament = await tournamentCollections.find().toList();
+      final users = await userCollection.find().toList();
+
+      final List<Map<String, dynamic>> combined = [
+        ...parties,
+        ...training,
+        ...tournament,
+        ...users
+      ];
+
+      return combined;
+    } catch (e) {
+      return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+
   // ------------------------------REQUETE-MONGODB-EDIT-PROFIL------------------------------\\
 
   // ----------REQUETE-MONGODB-CREATE-EVENT-----------
@@ -235,7 +269,6 @@ class MongoDatabase {
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
     }
   }
-
   static Future<List<Map<String, dynamic>>> getTournament() async {
     try {
       final parties = await tournoisCollection.find().toList();

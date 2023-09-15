@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'package:projet_flutter_1/db.dart';
+import 'package:projet_flutter_1/pages/profile.dart';
 
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/models/user.dart';
@@ -35,22 +34,25 @@ class _OurEventState extends State<OurEvent> {
           )
         ],
       ),
-      body: const creerEvent(),
+      body: CreerEvent(),
     );
   }
 }
 
-class creerEvent extends StatefulWidget {
-  const creerEvent({super.key});
+class CreerEvent extends StatefulWidget {
+  const CreerEvent({Key? key}) : super(key: key);
 
   @override
-  _creerEventState createState() => _creerEventState();
+  _CreerEventState createState() => _CreerEventState();
 }
 
+class _CreerEventState extends State<CreerEvent> {
+  late String _createEventTitle;
+  late String _createEventTheme;
+  late String _createEventPhoto;
+  late String _createEventDate;
 
-
-class _creerEventState extends State<creerEvent> {
-  final _keyForm = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   XFile? image;
 
@@ -116,52 +118,59 @@ class _creerEventState extends State<creerEvent> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _keyForm,
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
             decoration: const InputDecoration(hintText: 'Entrer un titre'),
             validator: (value) {
-              // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
               if (value == null || value.isEmpty) {
-                return 'Ne peut pas etre vide';
+                return 'Ne peut pas être vide';
               }
               return null;
+            },
+            onSaved: (value) {
+              _createEventTitle = value ?? '';
             },
           ),
           TextFormField(
             decoration: const InputDecoration(
                 hintText: 'Entrer un thème (Soirée/Repas/Apéro)'),
             validator: (value) {
-              // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
               if (value == null || value.isEmpty) {
-                return 'Ne peut pas etre vide';
+                return 'Ne peut pas être vide';
               }
               return null;
+            },
+            onSaved: (value) {
+              _createEventTheme = value ?? '';
             },
           ),
           TextFormField(
-            decoration: const InputDecoration(hintText: 'Entrer un titre'),
+            decoration: const InputDecoration(hintText: 'Entrer une photo'),
             validator: (value) {
-              // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
               if (value == null || value.isEmpty) {
-                return 'Ne peut pas etre vide';
+                return 'Ne peut pas être vide';
               }
               return null;
             },
+            onSaved: (value) {
+              _createEventPhoto = value ?? '';
+            },
           ),
-          // TextFormField(
-          //   decoration:
-          //       const InputDecoration(hintText: 'Entrer un truc pour la photo'),
-          //   validator: (value) {
-          //     // validator => regarde chaque textfield si il est valide => retourne true/false (activer par le validate())
-          //     if (value == null || value.isEmpty) {
-          //       return 'Ne peut pas etre vide';
-          //     }
-          //     return null;
-          //   },
-          // ),
+          
+          TextFormField(
+            decoration: const InputDecoration(hintText: 'Entrer une date'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Ne peut pas être vide';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _createEventDate = value ?? '';
+            },
           ElevatedButton(
             onPressed: () {
               myAlert();
@@ -194,15 +203,33 @@ class _creerEventState extends State<creerEvent> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: ElevatedButton(
-              onPressed: () {
-                if (_keyForm.currentState!.validate()) {
-                  // validate fait tourner tous les validator => true/false
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  final titleUpdate = _createEventTitle;
+                  final themeUpdate = _createEventTheme;
+                  final photoUpdate = _createEventPhoto;
+                  final dateUpdate = _createEventDate;
+
+                  // Utilisez la méthode createEvent pour insérer un nouvel événement
+                  await MongoDatabase.createEvent(
+                      titleUpdate, themeUpdate, photoUpdate, dateUpdate);
+
+                  // Affichez un message de succès
                   ScaffoldMessenger.of(context).showSnackBar(
-                    // ptit message en bas
                     const SnackBar(
-                        content: Text(
-                            'Événement envoyé aux admins en attente de validation')),
+                      content: Text('Événement créé avec succès'),
+                    ),
                   );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const PageProfil(title: 'Vos Event'),
+                    ),
+                  );
+
+                  // Vous pouvez rediriger l'utilisateur vers une autre page ou effectuer toute autre action ici
                 }
               },
               child: const Text('Créer'),
