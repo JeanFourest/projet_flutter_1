@@ -151,8 +151,10 @@ class actionProfil extends StatelessWidget {
           child: CircleAvatar(
             radius: 100, // Rayon du cercle
             backgroundImage: newPhotoBytes != null
-                ? MemoryImage(newPhotoBytes!) // Nouvelles données binaires de l'image
-                : MemoryImage(bytes), // Les données binaires de l'image existante
+                ? MemoryImage(
+                    newPhotoBytes!) // Nouvelles données binaires de l'image
+                : MemoryImage(
+                    bytes), // Les données binaires de l'image existante
           ),
         ),
         GestureDetector(
@@ -291,43 +293,56 @@ class actionProfil extends StatelessWidget {
             ),
           ),
         ),
-        // GestureDetector(
-        //   onTap: () {
-        //     showDialog(
-        //       context: context,
-        //       builder: (context) {
-        //         return alertDialogFormPhoto(
-        //           initialText: photo, // number de base
-        //           onSubmitted: (value) {
-        //             ScaffoldMessenger.of(context).showSnackBar(
-        //               // ptit message en bas
-        //               SnackBar(content: Text("modifié par => $value")),
-        //             );
-        //             Navigator.of(context).pop();
-        //           },
-        //         );
-        //       },
-        //     );
-        //   },
-        //   child: Card(
-        //     child: Column(
-        //       children: [
-        //         ListTile(
-        //           title: const Row(
-        //             children: <Widget>[
-        //               Icon(Icons.edit),
-        //               Icon(Icons.portrait),
-        //               SizedBox(
-        //                   width: 8), // Pour ajouter un espace entre les icônes
-        //               Text('Modifier votre photo de profil')
-        //             ],
-        //           ),
-        //           subtitle: Text(photo),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return alertDialogFormPhoto(
+                  initialText: photo, // number de base
+                  onSubmitted: (value) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      // ptit message en bas
+                      SnackBar(content: Text("modifié par => $value")),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            );
+          },
+          child: Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: const Row(
+                    children: <Widget>[
+                      Icon(Icons.edit),
+                      Icon(Icons.portrait),
+                      SizedBox(
+                          width: 8), // Pour ajouter un espace entre les icônes
+                      Text('Modifier votre photo de profil')
+                    ],
+                  ),
+                  // subtitle: Text(photo),
+                  // subtitle: CircleAvatar(
+                  //   radius: 100, // Rayon du cercle
+                  //   backgroundImage: newPhotoBytes != null
+                  //       ? MemoryImage(
+                  //           newPhotoBytes!) // Nouvelles données binaires de l'image
+                  //       : MemoryImage(
+                  //           bytes), // Les données binaires de l'image existante
+                  // ),
+                  subtitle: Image.memory(
+                    bytes, // Les données binaires de l'image
+                    width: 100, // Vous pouvez ajuster la largeur selon vos besoins
+                    height: 100, // Vous pouvez ajuster la hauteur selon vos besoins
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         const SizedBox(width: 10),
         GestureDetector(
           onTap: () {

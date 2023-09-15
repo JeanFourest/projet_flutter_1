@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:projet_flutter_1/models/user.dart';
 
@@ -131,6 +132,8 @@ class MongoDatabase {
       print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
     }
   }
+
+
 
   // ----------REQUETE-MONGODB-EDIT-UPDATE-EMAIL----------
   static Future<void> updateUserEmail(String userId, String emailEdited) async {
