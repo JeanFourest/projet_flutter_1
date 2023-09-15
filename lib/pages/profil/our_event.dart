@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/pages/profile.dart';
-
-import 'package:projet_flutter_1/db.dart';
 import 'package:projet_flutter_1/models/user.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -171,6 +169,7 @@ class _CreerEventState extends State<CreerEvent> {
             onSaved: (value) {
               _createEventDate = value ?? '';
             },
+          ),
           ElevatedButton(
             onPressed: () {
               myAlert();

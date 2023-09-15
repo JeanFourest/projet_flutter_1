@@ -129,7 +129,7 @@ class actionProfil extends StatelessWidget {
     }
 
     return ListView(
-      children: [
+      children: [/*
         // Affichage de la photo
         // Center(
         //   child: CircleAvatar(
@@ -145,7 +145,7 @@ class actionProfil extends StatelessWidget {
                 ? MemoryImage(newPhotoBytes!) // Nouvelles données binaires de l'image
                 : MemoryImage(bytes), // Les données binaires de l'image existante
           ),
-        ),
+        ),*/
         GestureDetector(
           onTap: () {
             // Appel de la fonction pour sélectionner une nouvelle image
