@@ -20,6 +20,7 @@ class MongoDatabase {
           'mongodb+srv://cavalier01:cavalier01@fluttercavalier.vik0exh.mongodb.net/fluttercavalier');
       await db.open();
       userCollection = db.collection('users');
+      var getUser = await getAllUser();
       eventCollection = db.collection('parties');
       tournoisCollection = db.collection('tournament');
       trainingCollection = db.collection('training');
@@ -27,11 +28,13 @@ class MongoDatabase {
       partiesCollections = db.collection('parties');
       trainingCollections = db.collection('training');
       tournamentCollections = db.collection('tournament');
+
       print('Connexion à MongoDB réussie');
     } catch (e) {
       print('Erreur de connexion à MongoDB: $e');
     }
   }
+
 
   //-------------REQUETE-MONGODB-ALL-USERS-------------
   static Future<List<Map<String, dynamic>>> getAllUser() async {
@@ -41,6 +44,43 @@ class MongoDatabase {
     } catch (e) {
       print('Error message get doc: $e');
       return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
+    }
+  }
+
+  static Future<Object?> getUser(String username, String password) async {
+    try {
+      print('je suis ici');
+      var user = await userCollection.findOne(where.eq('username', username));
+      print(user);
+      if (user != null) {
+        if (await password == user['password']) {
+          print("getUser");
+          getUserID(username);
+          return user;
+        } else {
+          return 'wallou';
+        }
+      }
+    } catch (e) {
+      print('Error message get doc: $e');
+      return Future.error(e);
+    }
+    return false;
+  }
+
+  static Future<String> getUserID(username) async {
+    try {
+      final user = await userCollection.findOne(where.eq('username', username));
+      if (user != null) {
+        var userID = user[0];
+        print('OKKKKKK');
+        print(userID);
+        return userID;
+      }
+      return 'NOPE';
+    } catch (e) {
+      print(e);
+      return Future.value(e.toString());
     }
   }
 
@@ -317,58 +357,4 @@ class MongoDatabase {
       print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
     }
   }
-/*
-static Future<List<Map<String, dynamic>>> getAllUser() async {
-      try {
-        final users = await userCollection.find().toList();
-        return users;
-      } catch (e) {
-        return Future.value(e as FutureOr<List<Map<String, dynamic>>>?);
-      }
-    }
-
-    static Future<void> createUser(User user) async {
-      try {
-        await userCollection.insertOne({
-          'username': user.username,
-          'password': user.password,
-          'email': user.email,
-          'photo': user.photo,
-          'phoneNumber': '',
-          'age': 0,
-          'link': '',
-          'isAdmin': false,
-          'isDP': false,
-        });
-        print('Utilisateur : $user.username a été créé avec succès');
-      } catch (e) {
-        print('Erreur lors de la création du compte: $e');
-      }
-    }
-
-    static Future<User?> getUserByUsername(String username) async {
-      try {
-        final user = await userCollection.findOne(where.eq('username', username));
-        if (user != null) {
-          return User(
-            username: user['username'],
-            password: user['password'],
-            email: user['email'],
-            photo: user['photo'],
-            phoneNumber: user['phoneNumber'],
-            age: user['age'],
-            link: user['link'],
-            isAdmin: user['isAdmin'],
-            isDP: user['isDP'],
-          );
-        }
-        return null; // L'utilisateur n'a pas été trouvé
-      } catch (e) {
-        print('Erreur lors de la récupération des données de l\'utilisateur: $e');
-        return null;
-      }
-    }
-
-  }
-  }*/
 }
