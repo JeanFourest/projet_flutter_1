@@ -11,16 +11,16 @@ class TrainingPage extends StatefulWidget {
 }
 
 class _TrainingPageState extends State<TrainingPage> {
-  //la variable allTournaments est initialisée à null pour recevoir les données de la base de données
+  //la variable allTrainings est initialisée à null pour recevoir les données de la base de données
   var allTrainings;
 
-  //la fonction tournaments() permet de récupérer les données de la base de données
+  //la fonction trainings() permet de récupérer les données de la base de données
   trainings() async {
     var trainings = await MongoDatabase.getTraining();
     return trainings;
   }
 
-  //la fonction initState() permet d'initialiser la variable allTournaments avec les données de la base de données
+  //la fonction initState() permet d'initialiser la variable allTrainings avec les données de la base de données
   @override
   void initState() {
     super.initState();
