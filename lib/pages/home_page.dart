@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MyHomePage(
+                          builder: (context) => const PageProfil(
                                 title: "Profile",
                               )));
                 } else if (pages == "event party") {
