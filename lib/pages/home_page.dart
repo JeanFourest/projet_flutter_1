@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:projet_flutter_1/pages/profile.dart';
 import 'package:projet_flutter_1/pages/register.dart';
+import 'package:projet_flutter_1/pages/login.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title});
@@ -103,6 +104,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                 title: "Tournament",
                               )));
                 }
+                else if (pages == "login") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Login(
+                            title: "Login",
+                          )));
+                }
+                else if (pages == "register") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Register(
+                            title: "Register",
+                          )));
+                }
               },
               //items du dropdownbutton
               items: const [
@@ -121,6 +138,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 DropdownMenuItem<String>(
                   value: "tournament",
                   child: Text("Tournament"),
+                ),
+                DropdownMenuItem<String>(
+                  value: "login",
+                  child: Text("Login"),
+                ),
+                DropdownMenuItem<String>(
+                  value: "register",
+                  child: Text("Register"),
                 ),
               ],
             )
