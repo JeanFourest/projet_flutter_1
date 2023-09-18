@@ -35,7 +35,6 @@ class MongoDatabase {
     }
   }
 
-
   //-------------REQUETE-MONGODB-ALL-USERS-------------
   static Future<List<Map<String, dynamic>>> getAllUser() async {
     try {
@@ -352,6 +351,18 @@ class MongoDatabase {
         where.id(ObjectId.parse(
             eventId)), // Obligez d'utiliser ça parceque c des object id ('0000')
         modify.set('participant', usernameParticipant),
+      );
+    } catch (e) {
+      print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');
+    }
+  }
+
+  static Future<void> updateTrainingValidation(
+      ObjectId trainingID, String status) async {
+    try {
+      await trainingCollection.update(
+        where.id(trainingID),
+        modify.set('status', status),
       );
     } catch (e) {
       print('Erreur lors de la mise à jour du nom d\'utilisateur: $e');

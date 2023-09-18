@@ -103,22 +103,20 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (context) => const TournamentPage(
                                 title: "Tournament",
                               )));
-                }
-                else if (pages == "login") {
+                } else if (pages == "login") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const Login(
-                            title: "Login",
-                          )));
-                }
-                else if (pages == "register") {
+                                title: "Login",
+                              )));
+                } else if (pages == "register") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const Register(
-                            title: "Register",
-                          )));
+                                title: "Register",
+                              )));
                 }
               },
               //items du dropdownbutton
